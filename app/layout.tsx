@@ -3,11 +3,12 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 // import { Analytics } from "@vercel/analytics/react"
+import { ThemeProvider } from './components/frontend/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'conversAI',
+  title: 'GetCooked AI',
   description: '--',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
@@ -20,9 +21,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en" className={inter.className}>
-        <body className="bg-white flex flex-col gap-4">
-          {children}
+        <body className="flex flex-col gap-4">
+          <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+            {children}
           {/* <Analytics /> */}  
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
