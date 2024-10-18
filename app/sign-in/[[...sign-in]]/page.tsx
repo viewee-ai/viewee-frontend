@@ -13,7 +13,7 @@ export default function Page(): JSX.Element | null {
 
   useEffect(() => {
     if (isSignedIn) {
-      router.push("/dashboard");
+      router.push("/interview");
     }
   }, [isSignedIn, router]);
 

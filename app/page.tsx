@@ -1,10 +1,10 @@
 
-import { Logos } from '@/app/components/frontend/Logos';
-import { Hero } from '@/app/components/frontend/Hero';
-import { Features } from '@/app/components/frontend/Features';
-import { HowItWorks } from '@/app/components/frontend/Works';
-import { FAQ } from '@/app/components/frontend/FAQ';
-import { Footer } from '@/app/components/frontend/Footer';
+import { Logos } from '@/app/components/landing/Logos';
+import { Hero } from '@/app/components/landing/Hero';
+import { Features } from '@/app/components/landing/Features';
+import { HowItWorks } from '@/app/components/landing/Works';
+import { FAQ } from '@/app/components/landing/FAQ';
+import { Footer } from '@/app/components/landing/Footer';
 // import { PricingTable } from '@/app/components/frontend/Pricing';
 // import { Analytics } from "@vercel/analytics/react"
 

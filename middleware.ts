@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 // Include '/landing' as a public route along with other public routes
-const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sso-callback', '/landing', '/', '/api/uploadthing(.*)']);
+const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sso-callback', '/landing', '/']);
 
 export default clerkMiddleware((auth, req) => {
   // If the request is not to a public route
