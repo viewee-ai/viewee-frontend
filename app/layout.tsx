@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'GetCooked AI',
   description: '--',
-  icons: [{ rel: 'icon', url: '/favicon.ico' }],
+  // icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 
 interface RootLayoutProps {

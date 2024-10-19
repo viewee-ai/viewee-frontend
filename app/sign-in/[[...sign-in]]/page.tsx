@@ -9,13 +9,31 @@ import CustomSignIn from "@/app/components/signIn";
 
 export default function Page(): JSX.Element | null {
   const router = useRouter();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, getToken } = useAuth(); // Fetch Clerk token
 
   useEffect(() => {
-    if (isSignedIn) {
-      router.push("/interview");
-    }
-  }, [isSignedIn, router]);
+    // If user is signed in, fetch the JWT and send it to the backend
+    const sendTokenToBackend = async () => {
+      if (isSignedIn) {
+        const token = await getToken(); // Get Clerk token
+        console.log("Clerk token:", token);
+        if (token) {
+          // Send token to backend
+          const response = await fetch('http://localhost:8000/protected', {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const data = await response.json();
+          console.log("Backend response:", data);
+        }
+        router.push("/interview");
+      }
+    };
+
+    sendTokenToBackend();
+  }, [isSignedIn, router, getToken]);
 
   if (isSignedIn) {
     return null;

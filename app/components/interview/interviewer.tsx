@@ -32,7 +32,7 @@ const InterviewerComponent: React.FC = () => {
       <div className="flex-grow bg-gray-800 p-4 rounded-lg overflow-y-auto mb-4">
         {transcript.map((item, index) => (
           <div key={index} className={`mb-2 ${item.sender === 'user' ? 'text-blue-300' : 'text-gray-400'}`}>
-            <span className="font-bold">{item.sender === 'user' ? 'You' : 'Aidan'}: </span>
+            <span className="font-bold">{item.sender === 'user' ? 'You' : 'Triet'}: </span>
             <span>{item.message}</span>
           </div>
         ))}

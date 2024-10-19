@@ -2,31 +2,26 @@
 
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-
-// Assume questions.json is in the public directory or fetched from an API
-const questions = [
-  {
-    "title": "Two Sum",
-    "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to the target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
-    "input": "nums = [2,7,11,15], target = 9",
-    "output": "[0,1]",
-    "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
-  },
-  {
-    "title": "Add Two Numbers",
-    "description": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
-    "input": "l1 = [2,4,3], l2 = [5,6,4]",
-    "output": "[7,0,8]",
-    "explanation": "342 + 465 = 807."
-  }
-];
+import questions from '@/data/75_blind.json';
 
 const MainContent: React.FC = () => {
   const [code, setCode] = useState("// Write your code here...");
   const [selectedQuestion, setSelectedQuestion] = useState(questions[0]);
+  const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const handleEditorChange = (value: string | undefined) => {
     setCode(value || "");
+
+    // Debounce the code change event
+    if(changeTimeout) {
+      clearTimeout(changeTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      console.log("Code changed:", value);
+      // Call the API to run the code
+    }, 5000);
+    setChangeTimeout(timeout);
   };
 
   const handleQuestionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
