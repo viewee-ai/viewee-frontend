@@ -3,11 +3,81 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import questions from '@/data/75_blind.json';
+import { useSession  } from '@/app/utils/session_provider';
+
+
+type Question = {
+  title: string;
+  description: string;
+  input: string;
+  output: string;
+  explanation?: string;
+};
 
 const MainContent: React.FC = () => {
   const [code, setCode] = useState("// Write your code here...");
-  const [selectedQuestion, setSelectedQuestion] = useState(questions[0]);
+  const [selectedQuestion, setSelectedQuestion] = useState<Question>(questions[0]);
   const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
+  // const [sessionId, setSessionId] = useState<string | null>(null);
+  const { sessionId, setSessionId } = useSession();
+
+  useEffect(() => {
+    // Important for initializing the session ID
+    initializeQuestion(selectedQuestion);
+  }, [selectedQuestion]);
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+    // Initialize question data in the backend and store session ID
+    const initializeQuestion = async (question: Question) => {
+      const response = await fetch('http://localhost:8000/api/initialize-question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(question),
+      });
+      const result = await response.json();
+      setSessionId(result.session_id);
+      console.log("Session initialized with ID:", result.session_id);
+    };
+
+    const sendIncrementalFeedback = async (code: string) => {
+      if (!sessionId) {
+        console.warn("No session ID available from main content. Skipping sendIncrementalFeedback.");
+        return;
+      }
+      console.log("Sending code to backend:", code);
+  
+      const response = await fetch('http://localhost:8000/api/incremental-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: sessionId,
+          code
+        }),
+      });
+      const result = await response.json();
+      console.log("Code Feedback:", result.feedback);
+  
+      // TODO: Display feedback to the user in the UI
+    };
+
+  /* const sendCodeToBackend = async (code: string) => {
+    const response = await fetch('http://localhost:8000/api/evaluate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code: code,
+        question: selectedQuestion.title,
+      }),
+    });
+ 
+    const result = await response.json();
+    console.log("Evaluation Result:", result);
+
+    // TODO: Handle the evaluation result (e.g., display feedback)
+  }; */
+
 
   const handleEditorChange = (value: string | undefined) => {
     setCode(value || "");
@@ -19,10 +89,12 @@ const MainContent: React.FC = () => {
 
     const timeout = setTimeout(() => {
       console.log("Code changed:", value);
-      // Call the API to run the code
+      // sendCodeToBackend(value || ""); // Send code to the backend for evaluation
+      sendIncrementalFeedback(value || ""); // Send incremental code updates to the backend
     }, 5000);
     setChangeTimeout(timeout);
   };
+
 
   const handleQuestionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTitle = event.target.value;
@@ -31,9 +103,12 @@ const MainContent: React.FC = () => {
       setSelectedQuestion(question);
       // Optionally, reset the code editor or provide a template based on the question
       setCode("// Start your solution here for: " + question.title);
+      initializeQuestion(question); // Initialize the new question in the backend
     }
   };
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  
   return (
     <div className="flex-1 p-6 bg-gray-800 text-white">
       <div className="flex justify-between items-center mb-4">

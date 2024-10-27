@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import Sidebar from '@/app/components/interview/side_bar';
 import MainContent from '@/app/components/interview/main_content';
-import Profile from '@/app/components/interview/interviewer';
+import Interviewer from '@/app/components/interview/interviewer';
+import { SessionProvider } from '@/app/utils/session_provider';
 
 const Home: NextPage = () => {
   return (
@@ -9,8 +10,10 @@ const Home: NextPage = () => {
       <Sidebar />
       
       <div className="flex-1 flex">
+      <SessionProvider>
         <MainContent />
-        <Profile />
+        <Interviewer />
+      </SessionProvider>
       </div>
     </div>
   );
