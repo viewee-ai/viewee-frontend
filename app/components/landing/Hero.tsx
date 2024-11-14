@@ -18,7 +18,7 @@ export function Hero() {
         <div className="flex flex-row items-center justify-between text-sm lg:justify-start">
           <Link href="/" className="flex items-center gap-2">
             <h4 className="text-3xl font-semibold">
-              Hit Coach<span className="text-primary-green">AI</span>
+              AI Interview<span className="text-primary-green">Wizard</span>
             </h4>
           </Link>
           <div className="md:hidden">
@@ -39,17 +39,17 @@ export function Hero() {
         <div className="relative items-center w-full py-12 lg:py-20">
           <div className="text-center">
             <span className="text-sm text-primary-green font-medium tracking-tight bg-primary-green/10 px-4 py-2 rounded-full">
-              🎉 Cutting-Edge AI Solution
+              💻 Your Personal Interview Coach
             </span>
 
             <h1 className="mt-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold leading-none">
-              Power Your Conversations{' '}
-              <span className="block text-primary-green font-bold">with HIT Coach AI!</span>
+              Ace Your Technical{' '}
+              <span className="block text-primary-green font-bold">Interviews!</span>
             </h1>
 
             <p className="max-w-xl mx-auto mt-4 text-base font-light lg:text-lg text-muted-foreground tracking-tighter">
-              Transform how you interact with users through seamless, intelligent conversations.
-              Converse AI makes it simple to integrate and elevate your chatbot experience.
+              Practice coding interviews 24/7 with our AI interviewer. Get instant feedback on your code,
+              communication skills, and problem-solving approach. Level up your interview game today!
             </p>
             <div className="flex items-center gap-x-5 w-full justify-center mt-5 ">
               {/* <LoginLink> */}
@@ -108,7 +108,7 @@ export function Hero() {
 
             <Image
               src={HeroImage}
-              alt="Hero image"
+              alt="Interactive coding interview environment"
               priority
               className="relative object-cover w-full border rounded-lg shadow-2xl lg:rounded-2xl"
             />

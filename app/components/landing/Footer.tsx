@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import Logo from "@/data/ConversAI.png";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export function Footer() {
@@ -9,24 +7,15 @@ export function Footer() {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Image src={Logo} className="size-8" alt="Logo" />
           <h4 className="text-lg font-semibold">
-            Converse<span className="text-primary-green">AI</span>
+            AI Interview<span className="text-primary-green">Wizard</span>
           </h4>
         </Link>
 
         {/* Social Links */}
         <div className="flex items-center space-x-6">
           <Link
-            href="https://twitter.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-primary"
-          >
-            <FaTwitter size={24} />
-          </Link>
-          <Link
-            href="https://github.com"
+            href="https://github.com/viewee-ai"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary"
@@ -34,7 +23,7 @@ export function Footer() {
             <FaGithub size={24} />
           </Link>
           <Link
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/school/george-mason-university/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-primary"
@@ -46,7 +35,7 @@ export function Footer() {
 
       {/* Copyright */}
       <div className="text-center mt-4 text-sm text-muted-foreground">
-        © {new Date().getFullYear()} ConverseAI. All rights reserved.
+        © {new Date().getFullYear()} AI Interview Wizard - Built at George Mason University. All rights reserved.
       </div>
     </footer>
   );
