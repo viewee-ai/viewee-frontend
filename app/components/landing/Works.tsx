@@ -1,29 +1,29 @@
-import { UserCheck, FileText, Monitor, Layout } from 'lucide-react';
+import { UserCheck, Code, MessageSquare, Award } from 'lucide-react';
 
 const steps = [
   {
-    name: 'Log in or Sign up',
+    name: 'Create Your Account',
     description:
-      'Begin by creating an account or logging in to access your personalized dashboard.',
+      'Sign up to get instant access to AI-powered technical interviews. Set up your profile and track your progress over time.',
     icon: UserCheck,
   },
   {
-    name: 'Create Your Chatbot',
+    name: 'Choose Your Challenge',
     description:
-      'Set up your AI-driven chatbot in just a few clicks. Choose a name, configure settings, and get ready to engage users.',
-    icon: Monitor,
+      'Select from a variety of coding problems ranging from data structures to algorithms. Pick your preferred difficulty level and programming language.',
+    icon: Code,
   },
   {
-    name: 'Design Conversations',
+    name: 'Practice With AI',
     description:
-      'Craft dynamic conversation flows easily with our intuitive editor. Create and manage multiple chat sequences effortlessly.',
-    icon: FileText,
+      'Engage with our AI interviewer that provides real-time feedback on your code and communication. Explain your thought process as you solve problems.',
+    icon: MessageSquare,
   },
   {
-    name: 'Launch and Engage',
+    name: 'Track & Improve',
     description:
-      'Once your chatbot is ready, deploy it instantly and start engaging with your audience.',
-    icon: Layout,
+      'Review your performance metrics, identify areas for improvement, and track your progress as you master technical interviewing skills.',
+    icon: Award,
   },
 ];
 
@@ -33,11 +33,11 @@ export function HowItWorks() {
       <div className="max-w-2xl mx-auto lg:text-center">
         <p className="font-semibold leading-7 text-primary-green">How It Works</p>
         <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          Build your AI Chatbot in 4 Easy Steps
+          Master Technical Interviews in 4 Steps
         </h2>
         <p className="mt-6 text-base leading-snug text-muted-foreground">
-          Follow these steps to create your chatbot, design conversations, and start engaging with
-          users in minutes.
+          Follow this proven process to improve both your coding skills and communication ability.
+          Practice with our AI interviewer and get ready for your next technical interview.
         </p>
       </div>
 

@@ -1,35 +1,35 @@
-import { Cloud, Lock, CreditCard, Database, Layout, Edit } from 'lucide-react';
+import { Code, MessageSquare, Brain, Target, LineChart, Shield } from 'lucide-react';
 
 const features = [
   {
-    name: "Advanced Security",
-    description: "Ensure your conversations are secure with robust multi-factor authentication and OAuth integration.",
-    icon: Lock,
+    name: "Real-time Code Analysis",
+    description: "Get instant feedback on your code quality, complexity, and performance with our advanced AI analysis system.",
+    icon: Code,
   },
   {
-    name: "Flexible Billing Integration",
-    description: "Easily manage subscriptions and payments through Stripe, ensuring a seamless billing experience.",
-    icon: CreditCard,
+    name: "Communication Skills Feedback",
+    description: "Practice explaining your thought process with our AI interviewer that evaluates your technical communication clarity.",
+    icon: MessageSquare,
   },
   {
-    name: "Scalable AI Infrastructure",
-    description: "Leverage scalable backend solutions to ensure your chatbot grows effortlessly with your user base.",
-    icon: Database,
+    name: "Adaptive AI Interviewer",
+    description: "Experience interviews that adapt to your skill level and provide personalized challenges to help you improve.",
+    icon: Brain,
   },
   {
-    name: "Dynamic Conversation Management",
-    description: "Easily create and manage conversations with an intuitive interface designed for seamless interaction.",
-    icon: Edit,
+    name: "Interview Performance Tracking",
+    description: "Track your progress over time with detailed metrics on problem-solving speed, communication clarity, and code quality.",
+    icon: LineChart,
   },
   {
-    name: "Customizable Chat Interface",
-    description: "Design your chat window with modern UI components, offering a professional and engaging user experience.",
-    icon: Layout,
+    name: "Technical Interview Preparation",
+    description: "Access a wide range of real-world coding problems commonly asked in top tech company interviews.",
+    icon: Target,
   },
   {
-    name: "Optimized Performance",
-    description: "Built on cutting-edge technology, Converse AI ensures fast, responsive, and reliable conversations.",
-    icon: Cloud,
+    name: "Private and Secure Practice",
+    description: "Practice with confidence knowing your code and interview sessions are completely private and secure.",
+    icon: Shield,
   },
 ];
 
@@ -37,12 +37,12 @@ export function Features() {
   return (
     <div className="py-24 sm:py-32">
       <div className="max-w-2xl mx-auto lg:text-center">
-        <p className="font-semibold leading-7 text-primary-green">Transform Your Conversations</p>
+        <p className="font-semibold leading-7 text-primary-green">Master Technical Interviews</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          Build Intelligent Chat Experiences Effortlessly
+          Practice Like It's The Real Thing
         </h1>
         <p className="mt-4 text-base leading-snug text-muted-foreground">
-          Say goodbye to complex setups! With Converse AI, you can deploy a powerful AI-driven chat solution in minutes. Start now and elevate your user interactions effortlessly.
+          Don't just solve coding problems—learn to communicate your solutions effectively. AI Interview Wizard provides a realistic interview environment where you can practice both your technical and communication skills.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export function Features() {
             <div key={feature.name} className="relative pl-16">
               <div className="text-base font-semibold leading-7">
                 <div className="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-primary">
-                  <feature.icon className="w-6 h-6 text-white dark:text-primary-green " />
+                  <feature.icon className="w-6 h-6 text-white dark:text-primary-green" />
                 </div>
                 {feature.name}
               </div>
