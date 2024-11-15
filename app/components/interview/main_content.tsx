@@ -51,7 +51,9 @@ const MainContent: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           session_id: sessionId,
-          code
+          code: code,
+          status: "Thinking", 
+          transcript: "" 
         }),
       });
       const result = await response.json();
