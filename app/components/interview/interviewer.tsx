@@ -1,12 +1,9 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSession  } from '@/app/utils/session_provider';
 
 
-/**
- * Defines the structure of a transcript message, where each message has a sender ('user' or 'interviewer') 
- * and the message content as a string.
- */
 interface TranscriptMessage {
   sender: 'user' | 'interviewer';
   message: string;
@@ -25,6 +22,7 @@ const InterviewerComponent: React.FC = () => {
   const ttsSocketRef = useRef<WebSocket | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const { sessionId } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     if (!audioContextRef.current) {
@@ -202,6 +200,7 @@ const InterviewerComponent: React.FC = () => {
     ttsSocket.binaryType = "arraybuffer"; // Set WebSocket to interpret data as binary
     const audioChunks: ArrayBuffer[] = []; // Array to accumulate chunks
     const playbackQueue: AudioBuffer[] = []; // Queue for sequential playback
+    let isLastChunkProcessed = false;
 
     // Ensure AudioContext is resumed (required by some browsers)
     audioContextRef.current?.resume().then(() => console.log("AudioContext resumed"));
@@ -216,13 +215,12 @@ const InterviewerComponent: React.FC = () => {
 
         const chunk = event.data;
         console.log("Received audio chunk of size:", chunk.byteLength);
-
-        // Accumulate chunks
         audioChunks.push(chunk);
 
         // Decode and queue audio every time enough data is collected
-        if (audioChunks.length >= 10) { // Adjust based on network and audio quality
+        if (audioChunks.length >= 80 || (chunk.byteLength < 1024 && !isLastChunkProcessed)) {
             console.log("Decoding accumulated chunks");
+            isLastChunkProcessed = chunk.byteLength < 1024;
             const combinedBuffer = concatenateArrayBuffers(audioChunks);
             audioChunks.length = 0; // Clear accumulated chunks
 
@@ -230,7 +228,7 @@ const InterviewerComponent: React.FC = () => {
                 audioContextRef.current.decodeAudioData(combinedBuffer, (buffer) => {
                     playbackQueue.push(buffer); // Add decoded audio to queue
                     console.log("Added decoded buffer to playback queue");
-                    playNextInQueue(); // Start playback if not already playing
+                    playNextInQueue();
                 }, (error) => {
                     console.error("Error decoding audio data:", error);
                 });
@@ -299,6 +297,10 @@ const InterviewerComponent: React.FC = () => {
       return result.buffer;
   };
 
+  const handleFinishInterview = () => {
+    router.push('/feedback');
+  };
+
   return (
     <div className="w-80 p-6 bg-gray-900 text-white flex flex-col h-full">
       {/* Top Section: Interviewer Profile */}
@@ -326,7 +328,9 @@ const InterviewerComponent: React.FC = () => {
           {isRecording ? "Stop Recording" : "Start Recording"}
         </button>
         {/* <button className="bg-yellow-500 text-white py-2 px-4 rounded">Interrupt</button> */}
-        <button className="bg-red-500 text-white py-2 px-4 rounded">Finish Interview</button>
+        <button className="bg-red-500 text-white py-2 px-4 rounded" onClick={handleFinishInterview}>
+          Finish Interview
+        </button>
       </div>
     </div>
   );
