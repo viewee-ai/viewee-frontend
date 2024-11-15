@@ -1,22 +1,26 @@
-import type { NextPage } from 'next';
+'use client'
+import { useSearchParams } from 'next/navigation';
 import Sidebar from '@/app/components/interview/side_bar';
 import MainContent from '@/app/components/interview/main_content';
 import Interviewer from '@/app/components/interview/interviewer';
 import { SessionProvider } from '@/app/utils/session_provider';
 
-const Home: NextPage = () => {
+const InterviewPage = () => {
+  const searchParams = useSearchParams();
+  const title = searchParams.get('title');
+
   return (
     <div className="flex h-screen">
       <Sidebar />
-      
+
       <div className="flex-1 flex">
-      <SessionProvider>
-        <MainContent />
-        <Interviewer />
-      </SessionProvider>
+        <SessionProvider>
+          <MainContent title={title || 'Two Sum'} />
+          <Interviewer />
+        </SessionProvider>
       </div>
     </div>
   );
 };
 
-export default Home;
+export default InterviewPage;

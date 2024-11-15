@@ -1,76 +1,66 @@
-[
+{
+  "Arrays & Hashing": [
     {
       "title": "Two Sum",
+      "level": "Easy",
       "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to the target. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
       "input": "nums = [2,7,11,15], target = 9",
       "output": "[0,1]",
       "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
     },
     {
-      "title": "Best Time to Buy and Sell Stock",
-      "description": "You are given an array of prices where prices[i] is the price of a given stock on an ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction.",
-      "input": "prices = [7,1,5,3,6,4]",
-      "output": "5",
-      "explanation": "Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5."
-    },
-    {
       "title": "Contains Duplicate",
+      "level": "Easy",
       "description": "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
       "input": "nums = [1,2,3,1]",
       "output": "true",
       "explanation": ""
     },
     {
+      "title": "Valid Anagram",
+      "level": "Easy",
+      "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "input": "s = 'anagram', t = 'nagaram'",
+      "output": "true",
+      "explanation": ""
+    },
+    {
+      "title": "Group Anagrams",
+      "level": "Medium",
+      "description": "Given an array of strings strs, group the anagrams together. You can return the answer in any order. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+      "input": "strs = ['eat','tea','tan','ate','nat','bat']",
+      "output": "[['bat'],['nat','tan'],['ate','eat','tea']]",
+      "explanation": ""
+    },
+    {
+      "title": "Longest Consecutive Sequence",
+      "level": "Medium",
+      "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. You must write an algorithm that runs in O(n) time.",
+      "input": "nums = [100,4,200,1,3,2]",
+      "output": "4",
+      "explanation": "The longest consecutive elements sequence is [1, 2, 3, 4], and its length is 4."
+    }
+  ],
+  "Arrays": [
+    {
+      "title": "Best Time to Buy and Sell Stock",
+      "level": "Easy",
+      "description": "You are given an array of prices where prices[i] is the price of a given stock on an ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve from this transaction.",
+      "input": "prices = [7,1,5,3,6,4]",
+      "output": "5",
+      "explanation": "Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5."
+    },
+    {
       "title": "Product of Array Except Self",
+      "level": "Medium",
       "description": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. You must write an algorithm that runs in O(n) time and without using the division operation.",
       "input": "nums = [1,2,3,4]",
       "output": "[24,12,8,6]",
       "explanation": ""
     },
     {
-      "title": "Maximum Subarray",
-      "description": "Given an integer array nums, find the subarray with the largest sum, and return its sum.",
-      "input": "nums = [-2,1,-3,4,-1,2,1,-5,4]",
-      "output": "6",
-      "explanation": "The subarray [4,-1,2,1] has the largest sum 6."
-    },
-    {
-      "title": "Maximum Product Subarray",
-      "description": "Given an integer array nums, find a subarray that has the largest product, and return the product.",
-      "input": "nums = [2,3,-2,4]",
-      "output": "6",
-      "explanation": "[2,3] has the largest product 6."
-    },
-    {
-      "title": "Search in Rotated Sorted Array",
-      "description": "Given the array nums after a possible rotation and an integer target, return the index of the target if it is in nums, or -1 if it is not in nums. You must write an algorithm with O(log n) runtime complexity.",
-      "input": "nums = [4,5,6,7,0,1,2], target = 0",
-      "output": "4",
-      "explanation": ""
-    },
-    {
-      "title": "Find Minimum in Rotated Sorted Array",
-      "description": "Given the sorted rotated array nums of unique elements, return the minimum element of this array. You must write an algorithm that runs in O(log n) time.",
-      "input": "nums = [3,4,5,1,2]",
-      "output": "1",
-      "explanation": "The original array was [1,2,3,4,5] rotated 3 times."
-    },
-    {
-      "title": "Container With Most Water",
-      "description": "Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store.",
-      "input": "height = [1,8,6,2,5,4,8,3,7]",
-      "output": "49",
-      "explanation": "The max area of water the container can contain is 49."
-    },
-    {
-      "title": "3Sum",
-      "description": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0. The solution set must not contain duplicate triplets.",
-      "input": "nums = [-1,0,1,2,-1,-4]",
-      "output": "[[-1,-1,2],[-1,0,1]]",
-      "explanation": "nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0. The distinct triplets are [-1,0,1] and [-1,-1,2]."
-    },
-    {
       "title": "Set Matrix Zeroes",
+      "level": "Medium",
       "description": "Given an m x n integer matrix, if an element is 0, set its entire row and column to 0's. You must do it in place.",
       "input": "matrix = [[1,1,1],[1,0,1],[1,1,1]]",
       "output": "[[1,0,1],[0,0,0],[1,0,1]]",
@@ -78,6 +68,7 @@
     },
     {
       "title": "Spiral Matrix",
+      "level": "Medium",
       "description": "Given an m x n matrix, return all elements of the matrix in spiral order.",
       "input": "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
       "output": "[1,2,3,6,9,8,7,4,5]",
@@ -85,20 +76,43 @@
     },
     {
       "title": "Rotate Image",
+      "level": "Medium",
       "description": "You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). You have to rotate the image in place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.",
       "input": "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
       "output": "[[7,4,1],[8,5,2],[9,6,3]]",
       "explanation": ""
+    }
+  ],
+  "Two Pointers": [
+    {
+      "title": "Container With Most Water",
+      "level": "Medium",
+      "description": "Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store.",
+      "input": "height = [1,8,6,2,5,4,8,3,7]",
+      "output": "49",
+      "explanation": "The max area of water the container can contain is 49."
     },
     {
-      "title": "Word Search",
-      "description": "Given an m x n grid of characters board and a string word, return true if the word exists in the grid. The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.",
-      "input": "board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = 'ABCCED'",
-      "output": "true",
-      "explanation": ""
+      "title": "3Sum",
+      "level": "Medium",
+      "description": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0. The solution set must not contain duplicate triplets.",
+      "input": "nums = [-1,0,1,2,-1,-4]",
+      "output": "[[-1,-1,2],[-1,0,1]]",
+      "explanation": "nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0. The distinct triplets are [-1,0,1] and [-1,-1,2]."
     },
+    {
+      "title": "Remove Nth Node From End of List",
+      "level": "Medium",
+      "description": "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
+      "input": "head = [1,2,3,4,5], n = 2",
+      "output": "[1,2,3,5]",
+      "explanation": ""
+    }
+  ],
+  "Sliding Window": [
     {
       "title": "Longest Substring Without Repeating Characters",
+      "level": "Medium",
       "description": "Given a string s, find the length of the longest substring without repeating characters.",
       "input": "s = 'abcabcbb'",
       "output": "3",
@@ -106,41 +120,69 @@
     },
     {
       "title": "Longest Repeating Character Replacement",
+      "level": "Medium",
       "description": "You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times. Return the length of the longest substring containing the same letter you can get after performing the above operations.",
       "input": "s = 'ABAB', k = 2",
       "output": "4",
       "explanation": "Replace the two 'A's with two 'B's or vice versa."
     },
     {
-      "title": "Valid Anagram",
-      "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
-      "input": "s = 'anagram', t = 'nagaram'",
-      "output": "true",
-      "explanation": ""
-    },
-    {
       "title": "Minimum Window Substring",
+      "level": "Hard",
       "description": "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string.",
       "input": "s = 'ADOBECODEBANC', t = 'ABC'",
       "output": "'BANC'",
       "explanation": "The minimum window substring 'BANC' includes 'A', 'B', and 'C' from string t."
-    },
+    }
+  ],
+  "Stack": [
     {
       "title": "Valid Parentheses",
+      "level": "Easy",
       "description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if open brackets are closed by the same type of brackets, closed in the correct order, and every close bracket has a corresponding open bracket of the same type.",
       "input": "s = '()[]{}'",
       "output": "true",
       "explanation": ""
-    },
+    }
+  ],
+  "Binary Search": [
     {
-      "title": "Group Anagrams",
-      "description": "Given an array of strings strs, group the anagrams together. You can return the answer in any order. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
-      "input": "strs = ['eat','tea','tan','ate','nat','bat']",
-      "output": "[['bat'],['nat','tan'],['ate','eat','tea']]",
+      "title": "Search in Rotated Sorted Array",
+      "level": "Medium",
+      "description": "Given the array nums after a possible rotation and an integer target, return the index of the target if it is in nums, or -1 if it is not in nums. You must write an algorithm with O(log n) runtime complexity.",
+      "input": "nums = [4,5,6,7,0,1,2], target = 0",
+      "output": "4",
       "explanation": ""
     },
     {
+      "title": "Find Minimum in Rotated Sorted Array",
+      "level": "Medium",
+      "description": "Given the sorted rotated array nums of unique elements, return the minimum element of this array. You must write an algorithm that runs in O(log n) time.",
+      "input": "nums = [3,4,5,1,2]",
+      "output": "1",
+      "explanation": "The original array was [1,2,3,4,5] rotated 3 times."
+    }
+  ],
+  "Dynamic Programming": [
+    {
+      "title": "Maximum Subarray",
+      "level": "Easy",
+      "description": "Given an integer array nums, find the subarray with the largest sum, and return its sum.",
+      "input": "nums = [-2,1,-3,4,-1,2,1,-5,4]",
+      "output": "6",
+      "explanation": "The subarray [4,-1,2,1] has the largest sum 6."
+    },
+    {
+      "title": "Maximum Product Subarray",
+      "level": "Medium",
+      "description": "Given an integer array nums, find a subarray that has the largest product, and return the product.",
+      "input": "nums = [2,3,-2,4]",
+      "output": "6",
+      "explanation": "[2,3] has the largest product 6."
+    },
+    {
       "title": "Longest Palindromic Substring",
+      "level": "Medium",
       "description": "Given a string s, return the longest palindromic substring in s.",
       "input": "s = 'babad'",
       "output": "'bab'",
@@ -148,13 +190,17 @@
     },
     {
       "title": "Palindromic Substrings",
+      "level": "Medium",
       "description": "Given a string s, return the number of palindromic substrings in it. A string is a palindrome when it reads the same backward as forward. A substring is a contiguous sequence of characters within the string.",
       "input": "s = 'aaa'",
       "output": "6",
       "explanation": "The six palindromic substrings are 'a', 'a', 'a', 'aa', 'aa', 'aaa'."
-    },
+    }
+  ],
+  "Linked List": [
     {
       "title": "Reverse Linked List",
+      "level": "Easy",
       "description": "Given the head of a singly linked list, reverse the list, and return the reversed list.",
       "input": "head = [1,2,3,4,5]",
       "output": "[5,4,3,2,1]",
@@ -162,6 +208,7 @@
     },
     {
       "title": "Linked List Cycle",
+      "level": "Easy",
       "description": "Given the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.",
       "input": "head = [3,2,0,-4], pos = 1",
       "output": "true",
@@ -169,6 +216,7 @@
     },
     {
       "title": "Merge Two Sorted Lists",
+      "level": "Easy",
       "description": "You are given the heads of two sorted linked lists list1 and list2. Merge the two lists in a one-sorted list. The list should be made by splicing together the nodes of the first two lists.",
       "input": "list1 = [1,2,4], list2 = [1,3,4]",
       "output": "[1,1,2,3,4,4]",
@@ -176,6 +224,7 @@
     },
     {
       "title": "Merge k Sorted Lists",
+      "level": "Hard",
       "description": "You are given an array of k linked-lists lists, each linked list is sorted in ascending order. Merge all the linked lists into one sorted linked list and return it.",
       "input": "lists = [[1,4,5],[1,3,4],[2,6]]",
       "output": "[1,1,2,3,4,4,5,6]",
@@ -183,6 +232,7 @@
     },
     {
       "title": "Reorder List",
+      "level": "Medium",
       "description": "You are given the head of a singly linked list. Reorder the list to be in the following form: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …. You may not modify the values in the list's nodes, only nodes themselves may be changed.",
       "input": "head = [1,2,3,4]",
       "output": "[1,4,2,3]",
@@ -190,132 +240,25 @@
     },
     {
       "title": "Remove Nth Node From End of List",
+      "level": "Medium",
       "description": "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
       "input": "head = [1,2,3,4,5], n = 2",
       "output": "[1,2,3,5]",
       "explanation": ""
-    },
+    }
+  ],
+  "Heap / Priority Queue": [
     {
-      "title": "Maximum Depth of Binary Tree",
-      "description": "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
-      "input": "root = [3,9,20,null,null,15,7]",
-      "output": "3",
-      "explanation": ""
-    },
-    {
-      "title": "Same Tree",
-      "description": "Given the roots of two binary trees p and q, write a function to check if they are the same or not. Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.",
-      "input": "p = [1,2,3], q = [1,2,3]",
-      "output": "true",
-      "explanation": ""
-    },
-    {
-      "title": "Binary Tree Maximum Path Sum",
-      "description": "Given the root of a binary tree, return the maximum path sum of any non-empty path.",
-      "input": "root = [1,2,3]",
-      "output": "6",
-      "explanation": "The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6."
-    },
-    {
-      "title": "Invert Binary Tree",
-      "description": "Given the root of a binary tree, invert the tree, and return its root.",
-      "input": "root = [4,2,7,1,3,6,9]",
-      "output": "[4,7,2,9,6,3,1]",
-      "explanation": ""
-    },
-    {
-      "title": "Binary Tree Level Order Traversal",
-      "description": "Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).",
-      "input": "root = [3,9,20,null,null,15,7]",
-      "output": "[[3],[9,20],[15,7]]",
-      "explanation": ""
-    },
-    {
-      "title": "Serialize and Deserialize Binary Tree",
-      "description": "Design an algorithm to serialize and deserialize a binary tree. Ensure that a binary tree can be serialized to a string and deserialized to the original tree structure.",
-      "input": "root = [1,2,3,null,null,4,5]",
-      "output": "[1,2,3,null,null,4,5]",
-      "explanation": ""
-    },
-    {
-      "title": "Construct Binary Tree from Preorder and Inorder Traversal",
-      "description": "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
-      "input": "preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]",
-      "output": "[3,9,20,null,null,15,7]",
-      "explanation": ""
-    },
-    {
-      "title": "Subtree of Another Tree",
-      "description": "Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values as subRoot, and false otherwise.",
-      "input": "root = [3,4,5,1,2], subRoot = [4,1,2]",
-      "output": "true",
-      "explanation": ""
-    },
-    {
-      "title": "Validate Binary Search Tree",
-      "description": "Given the root of a binary tree, determine if it is a valid binary search tree (BST).",
-      "input": "root = [2,1,3]",
-      "output": "true",
-      "explanation": ""
-    },
-    {
-      "title": "Kth Smallest Element in a BST",
-      "description": "Given the root of a binary search tree and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.",
-      "input": "root = [3,1,4,null,2], k = 1",
-      "output": "1",
-      "explanation": ""
-    },
-    {
-      "title": "Implement Trie (Prefix Tree)",
-      "description": "A trie (pronounced as 'try') or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. Implement the Trie class.",
-      "input": "['Trie', 'insert', 'search', 'search', 'startsWith', 'insert', 'search'] [[], ['apple'], ['apple'], ['app'], ['app'], ['app'], ['app']]",
-      "output": "[null, null, true, false, true, null, true]",
-      "explanation": ""
-    },
-    {
-      "title": "Add and Search Word - Data structure design",
-      "description": "Design a data structure that supports adding new words and finding if a string matches any previously added string. Implement the WordDictionary class.",
-      "input": "['WordDictionary', 'addWord', 'addWord', 'addWord', 'search', 'search', 'search', 'search'] [[], ['bad'], ['dad'], ['mad'], ['pad'], ['bad'], ['.ad'], ['b..']]",
-      "output": "[null, null, null, null, false, true, true, true]",
-      "explanation": ""
-    },
-    {
-      "title": "Word Search II",
-      "description": "Given an m x n board of characters and a list of strings words, return all words on the board. Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.",
-      "input": "board = [['o','a','a','n'],['e','t','a','e'],['i','h','k','r'],['i','f','l','v']], words = ['oath','pea','eat','rain']",
-      "output": "['eat','oath']",
-      "explanation": ""
-    },
-    {
-      "title": "Number of Islands",
-      "description": "Given an m x n 2D binary grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically.",
-      "input": "grid = [['1','1','1','1','0'],['1','1','0','1','0'],['1','1','0','0','0'],['0','0','0','0','0']]",
-      "output": "1",
-      "explanation": ""
-    },
-    {
-      "title": "Clone Graph",
-      "description": "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a value and a list of its neighbors.",
-      "input": "adjList = [[2,4],[1,3],[2,4],[1,3]]",
-      "output": "[[2,4],[1,3],[2,4],[1,3]]",
-      "explanation": ""
-    },
-    {
-      "title": "Course Schedule",
-      "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. Return true if you can finish all courses given the prerequisites array, where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.",
-      "input": "numCourses = 2, prerequisites = [[1,0]]",
-      "output": "true",
-      "explanation": ""
-    },
-    {
-      "title": "Number of Connected Components in an Undirected Graph",
-      "description": "You are given n nodes labeled from 0 to n - 1 and a list of undirected edges. Write a function to find the number of connected components in an undirected graph.",
-      "input": "n = 5, edges = [[0, 1], [1, 2], [3, 4]]",
-      "output": "2",
+      "title": "Merge k Sorted Lists",
+      "level": "Hard",
+      "description": "You are given an array of k linked-lists lists, each linked list is sorted in ascending order. Merge all the linked lists into one sorted linked list and return it.",
+      "input": "lists = [[1,4,5],[1,3,4],[2,6]]",
+      "output": "[1,1,2,3,4,4,5,6]",
       "explanation": ""
     },
     {
       "title": "Find Median from Data Stream",
+      "level": "Hard",
       "description": "The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values. Implement the MedianFinder class.",
       "input": "['MedianFinder', 'addNum', 'addNum', 'findMedian', 'addNum', 'findMedian'] [[], [1], [2], [], [3], []]",
       "output": "[null, null, null, 1.5, null, 2.0]",
@@ -323,24 +266,177 @@
     },
     {
       "title": "Top K Frequent Elements",
+      "level": "Medium",
       "description": "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.",
       "input": "nums = [1,1,1,2,2,3], k = 2",
       "output": "[1,2]",
       "explanation": ""
+    }
+  ],
+  "Trees": [
+    {
+      "title": "Maximum Depth of Binary Tree",
+      "level": "Easy",
+      "description": "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+      "input": "root = [3,9,20,null,null,15,7]",
+      "output": "3",
+      "explanation": ""
+    },
+    {
+      "title": "Same Tree",
+      "level": "Easy",
+      "description": "Given the roots of two binary trees p and q, write a function to check if they are the same or not. Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.",
+      "input": "p = [1,2,3], q = [1,2,3]",
+      "output": "true",
+      "explanation": ""
+    },
+    {
+      "title": "Binary Tree Maximum Path Sum",
+      "level": "Hard",
+      "description": "Given the root of a binary tree, return the maximum path sum of any non-empty path.",
+      "input": "root = [1,2,3]",
+      "output": "6",
+      "explanation": "The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6."
+    },
+    {
+      "title": "Invert Binary Tree",
+      "level": "Easy",
+      "description": "Given the root of a binary tree, invert the tree, and return its root.",
+      "input": "root = [4,2,7,1,3,6,9]",
+      "output": "[4,7,2,9,6,3,1]",
+      "explanation": ""
+    },
+    {
+      "title": "Binary Tree Level Order Traversal",
+      "level": "Medium",
+      "description": "Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).",
+      "input": "root = [3,9,20,null,null,15,7]",
+      "output": "[[3],[9,20],[15,7]]",
+      "explanation": ""
+    },
+    {
+      "title": "Serialize and Deserialize Binary Tree",
+      "level": "Hard",
+      "description": "Design an algorithm to serialize and deserialize a binary tree. Ensure that a binary tree can be serialized to a string and deserialized to the original tree structure.",
+      "input": "root = [1,2,3,null,null,4,5]",
+      "output": "[1,2,3,null,null,4,5]",
+      "explanation": ""
+    },
+    {
+      "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+      "level": "Medium",
+      "description": "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
+      "input": "preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]",
+      "output": "[3,9,20,null,null,15,7]",
+      "explanation": ""
+    },
+    {
+      "title": "Subtree of Another Tree",
+      "level": "Easy",
+      "description": "Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values as subRoot, and false otherwise.",
+      "input": "root = [3,4,5,1,2], subRoot = [4,1,2]",
+      "output": "true",
+      "explanation": ""
+    },
+    {
+      "title": "Validate Binary Search Tree",
+      "level": "Medium",
+      "description": "Given the root of a binary tree, determine if it is a valid binary search tree (BST).",
+      "input": "root = [2,1,3]",
+      "output": "true",
+      "explanation": ""
+    },
+    {
+      "title": "Kth Smallest Element in a BST",
+      "level": "Medium",
+      "description": "Given the root of a binary search tree and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.",
+      "input": "root = [3,1,4,null,2], k = 1",
+      "output": "1",
+      "explanation": ""
+    },
+    {
+      "title": "Implement Trie (Prefix Tree)",
+      "level": "Medium",
+      "description": "A trie (pronounced as 'try') or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. Implement the Trie class.",
+      "input": "['Trie', 'insert', 'search', 'search', 'startsWith', 'insert', 'search'] [[], ['apple'], ['apple'], ['app'], ['app'], ['app'], ['app']]",
+      "output": "[null, null, true, false, true, null, true]",
+      "explanation": ""
+    },
+    {
+      "title": "Add and Search Word - Data structure design",
+      "level": "Medium",
+      "description": "Design a data structure that supports adding new words and finding if a string matches any previously added string. Implement the WordDictionary class.",
+      "input": "['WordDictionary', 'addWord', 'addWord', 'addWord', 'search', 'search', 'search', 'search'] [[], ['bad'], ['dad'], ['mad'], ['pad'], ['bad'], ['.ad'], ['b..']]",
+      "output": "[null, null, null, null, false, true, true, true]",
+      "explanation": ""
+    },
+    {
+      "title": "Word Search II",
+      "level": "Hard",
+      "description": "Given an m x n board of characters and a list of strings words, return all words on the board. Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.",
+      "input": "board = [['o','a','a','n'],['e','t','a','e'],['i','h','k','r'],['i','f','l','v']], words = ['oath','pea','eat','rain']",
+      "output": "['eat','oath']",
+      "explanation": ""
+    }
+  ],
+  "Graphs": [
+    {
+      "title": "Number of Islands",
+      "level": "Medium",
+      "description": "Given an m x n 2D binary grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is formed by connecting adjacent lands horizontally or vertically.",
+      "input": "grid = [['1','1','1','1','0'],['1','1','0','1','0'],['1','1','0','0','0'],['0','0','0','0','0']]",
+      "output": "1",
+      "explanation": ""
+    },
+    {
+      "title": "Clone Graph",
+      "level": "Medium",
+      "description": "Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node in the graph contains a value and a list of its neighbors.",
+      "input": "adjList = [[2,4],[1,3],[2,4],[1,3]]",
+      "output": "[[2,4],[1,3],[2,4],[1,3]]",
+      "explanation": ""
+    },
+    {
+      "title": "Course Schedule",
+      "level": "Medium",
+      "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. Return true if you can finish all courses given the prerequisites array, where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.",
+      "input": "numCourses = 2, prerequisites = [[1,0]]",
+      "output": "true",
+      "explanation": ""
+    },
+    {
+      "title": "Number of Connected Components in an Undirected Graph",
+      "level": "Medium",
+      "description": "You are given n nodes labeled from 0 to n - 1 and a list of undirected edges. Write a function to find the number of connected components in an undirected graph.",
+      "input": "n = 5, edges = [[0, 1], [1, 2], [3, 4]]",
+      "output": "2",
+      "explanation": ""
     },
     {
       "title": "Alien Dictionary",
+      "level": "Hard",
       "description": "There is a new alien language that uses the Latin alphabet. However, the order of letters is unknown to you. You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.",
       "input": "['wrt', 'wrf', 'er', 'ett', 'rftt']",
       "output": "'wertf'",
       "explanation": ""
+    }
+  ],
+  "Backtracking": [
+    {
+      "title": "Word Search",
+      "level": "Medium",
+      "description": "Given an m x n grid of characters board and a string word, return true if the word exists in the grid. The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.",
+      "input": "board = [['A','B','C','E'],['S','F','C','S'],['A','D','E','E']], word = 'ABCCED'",
+      "output": "true",
+      "explanation": ""
     },
     {
-      "title": "Longest Consecutive Sequence",
-      "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. You must write an algorithm that runs in O(n) time.",
-      "input": "nums = [100,4,200,1,3,2]",
-      "output": "4",
-      "explanation": "The longest consecutive elements sequence is [1, 2, 3, 4], and its length is 4."
+      "title": "Word Search II",
+      "level": "Hard",
+      "description": "Given an m x n board of characters and a list of strings words, return all words on the board. Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring.",
+      "input": "board = [['o','a','a','n'],['e','t','a','e'],['i','h','k','r'],['i','f','l','v']], words = ['oath','pea','eat','rain']",
+      "output": "['eat','oath']",
+      "explanation": ""
     }
-]
-  
+  ]
+}
