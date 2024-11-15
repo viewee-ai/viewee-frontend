@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -8,7 +8,7 @@ export function Footer() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <h4 className="text-lg font-semibold">
-            AI Interview<span className="text-primary-green">Wizard</span>
+            View<span className="text-primary-green">ee</span>
           </h4>
         </Link>
 
@@ -35,7 +35,8 @@ export function Footer() {
 
       {/* Copyright */}
       <div className="text-center mt-4 text-sm text-muted-foreground">
-        © {new Date().getFullYear()} AI Interview Wizard - Built at George Mason University. All rights reserved.
+        © {new Date().getFullYear()} Viewee - Built at George Mason University.
+        All rights reserved.
       </div>
     </footer>
   );
