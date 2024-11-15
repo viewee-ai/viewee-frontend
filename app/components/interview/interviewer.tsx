@@ -244,9 +244,9 @@ const InterviewerComponent: React.FC = () => {
         if (!buffer) return;
 
         console.log("Playing audio buffer");
-        const source = audioContextRef.current.createBufferSource();
+        const source = audioContextRef.current!.createBufferSource();
         source.buffer = buffer;
-        source.connect(audioContextRef.current.destination);
+        source.connect(audioContextRef.current!.destination);
         source.playbackRate.value = 1; // Adjust playback rate if needed
 
         source.start();
@@ -259,8 +259,25 @@ const InterviewerComponent: React.FC = () => {
         };
     };
 
+    // Handle the remaining audio chunk when the WebSocket connection is closed
     ttsSocket.onclose = () => {
-        console.log("TTS WebSocket closed");
+      console.log("TTS WebSocket closed");
+      if (audioChunks.length > 0) {
+        const combinedBuffer = concatenateArrayBuffers(audioChunks);
+        audioChunks.length = 0; // Clear accumulated chunks
+
+        try {
+          audioContextRef.current?.decodeAudioData(combinedBuffer, (buffer) => {
+            playbackQueue.push(buffer); // Add decoded audio to queue
+            console.log("Added final decoded buffer to playback queue");
+            playNextInQueue();
+          }, (error) => {
+            console.error("Error decoding final audio data:", error);
+          });
+        } catch (error) {
+          console.error("Failed to decode final audio data:", error);
+        }
+      }
         ttsSocketRef.current = null;
     };
 
