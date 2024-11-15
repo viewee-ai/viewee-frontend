@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { useRouter } from 'next/router';
 
 interface FeedbackPageProps {
     userId: string;
@@ -16,6 +17,8 @@ interface FeedbackPageProps {
     const [improvements, setImprovements] = useState<string | null>(null);
     const [solutionCode, setSolutionCode] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+
+    const router = useRouter();
   
     useEffect(() => {
       const fetchFeedback = async () => {
@@ -83,6 +86,9 @@ interface FeedbackPageProps {
   
         <Button onClick={() => window.location.reload()}>
           Retry Problem
+        </Button>
+        <Button onClick={() => router.push('/app/dashboard')}>
+          Return to Dashboard
         </Button>
       </div>
     );
