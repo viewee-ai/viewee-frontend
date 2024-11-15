@@ -1,14 +1,14 @@
-import React from 'react';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { ClerkProvider } from '@clerk/nextjs';
-import { ThemeProvider } from './components/landing/ThemeProvider';
+import React from "react";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "./components/landing/ThemeProvider";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'GetCooked AI',
-  description: '--',
+  title: "Viewee",
+  description: "--",
 };
 
 interface RootLayoutProps {
