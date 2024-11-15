@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface FeedbackPageProps {
     userId: string;
