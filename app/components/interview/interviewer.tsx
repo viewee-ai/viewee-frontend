@@ -20,6 +20,7 @@ const InterviewerComponent: React.FC = () => {
   const socketRef = useRef<WebSocket | null>(null);
   const { sessionId } = useSession();
   const router = useRouter();
+  
 
   useEffect(() => {
     if (!audioContextRef.current) {
@@ -114,6 +115,7 @@ const InterviewerComponent: React.FC = () => {
    */
   const handleMicClick = () => {
     if (isRecording) stopRecording();
+    
     else startRecording();
   };
 

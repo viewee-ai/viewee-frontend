@@ -5,18 +5,17 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useRouter } from "next/navigation";
+import { useSession  } from '@/app/utils/session_provider';
 
-interface FeedbackPageProps {
-  userId: string;
-  problemId: string;
-}
 
-const FeedbackPage: React.FC<FeedbackPageProps> = ({ userId, problemId }) => {
+
+const FeedbackPage: React.FC = () => {
   const [codeScore, setCodeScore] = useState<number | null>(null);
   const [strengths, setStrengths] = useState<string | null>(null);
   const [improvements, setImprovements] = useState<string | null>(null);
   const [solutionCode, setSolutionCode] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const { sessionId } = useSession();
 
   const router = useRouter();
 
@@ -32,10 +31,7 @@ const FeedbackPage: React.FC<FeedbackPageProps> = ({ userId, problemId }) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              userId,
-              problemId,
-            }),
+            body: JSON.stringify({ session_id: sessionId }),
           }
         );
         if (!response.ok) {
@@ -56,7 +52,7 @@ const FeedbackPage: React.FC<FeedbackPageProps> = ({ userId, problemId }) => {
       }
     };
     fetchFeedback();
-  }, [userId, problemId]);
+  });
 
   if (loading) {
     return (

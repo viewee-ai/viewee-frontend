@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from './components/landing/ThemeProvider';
+import { SessionProvider } from '@/app/utils/session_provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,19 +18,21 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <ClerkProvider>
-      <html lang="en" className={inter.className}>
-        <body className="flex flex-col gap-4">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <SessionProvider>
+      <ClerkProvider>
+        <html lang="en" className={inter.className}>
+          <body className="flex flex-col gap-4">
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </body>
+        </html>
+      </ClerkProvider>
+    </SessionProvider>
   );
 }

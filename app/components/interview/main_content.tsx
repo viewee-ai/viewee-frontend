@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback} from 'react';
 import Editor from '@monaco-editor/react';
 import questions from '@/data/75_blind.json';
 import { useSession  } from '@/app/utils/session_provider';
-
+import { useAppContext } from '@/app/utils/AppContext';
 
 type Question = {
   title: string;
@@ -23,7 +23,8 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ title })=> {
-  const [code, setCode] = useState("// Write your code here...");
+  //const [code, setCode] = useState("// Write your code here...");
+  const { code, setCode } = useAppContext();
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
   const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
   // const [sessionId, setSessionId] = useState<string | null>(null);
