@@ -1,122 +1,131 @@
 'use client'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import questions from '@/data/75_blind.json';
 
-import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useRouter } from 'next/navigation'
+interface Question {
+  title: string;
+  level: 'Easy' | 'Medium' | 'Hard';
+  description: string;
+  input: string;
+  output: string;
+  explanation: string;
+}
 
-export default function DashboardPage() {
-  const router = useRouter()
+interface CategoryTableProps {
+  categoryName: string;
+  questions: Question[];
+  searchQuery: string;
+}
 
-  // Mock data (will be replaced with real data later)
-  const mockStats = {
-    totalInterviews: 12,
-    completedInterviews: 8,
-    averageScore: 85,
-    upcomingInterview: "Frontend Developer"
-  }
+interface QuestionRowProps {
+  question: Question;
+}
 
-  const recentInterviews = [
-    { id: 1, role: "Software Engineer", date: "2024-03-15", score: 82 },
-    { id: 2, role: "Frontend Developer", date: "2024-03-10", score: 88 },
-    { id: 3, role: "Full Stack Developer", date: "2024-03-05", score: 85 }
-  ]
+type QuestionsData = {
+  [key: string]: Question[];
+};
 
-  // Button handlers
-  const handleStartInterview = () => {
-    router.push('/interview')
-  }
+const isValidLevel = (level: string): level is 'Easy' | 'Medium' | 'Hard' => {
+  return ['Easy', 'Medium', 'Hard'].includes(level);
+};
 
-  const handleViewAllInterviews = () => {
-    // This would navigate to a full list view
-    router.push('/interviews')
-  }
+export default function Home() {
+  const [data, setData] = useState<QuestionsData>({});
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  useEffect(() => {
+    const filteredQuestions = Object.keys(questions).reduce((acc, category) => {
+      acc[category] = (questions as QuestionsData)[category].filter((question: Question) =>
+        isValidLevel(question.level)
+      ) as Question[];
+      return acc;
+    }, {} as QuestionsData);
+
+    setData(filteredQuestions);
+  }, []);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+    <div className="p-6 bg-gray-900 min-h-screen text-white">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">5 / 75</h1>
+        <p className="bg-gray-800 text-gray-300 p-2 rounded">
+          The Blind 75 is a popular list of algorithm practice problems.
+        </p>
       </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-500">Total Interviews</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{mockStats.totalInterviews}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-500">Completed</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{mockStats.completedInterviews}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-500">Average Score</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{mockStats.averageScore}%</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-gray-500">Next Interview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg font-medium">{mockStats.upcomingInterview}</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Interviews */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Recent Interviews</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {recentInterviews.map((interview) => (
-              <div 
-                key={interview.id} 
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <div>
-                  <h3 className="font-medium">{interview.role}</h3>
-                  <p className="text-sm text-gray-500">{interview.date}</p>
-                </div>
-                <div className="text-lg font-medium">
-                  {interview.score}%
-                </div>
-              </div>
+      <div className="bg-gray-800 rounded-lg p-4">
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full p-2 rounded bg-gray-700 text-gray-300 mb-4"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <div>
+          {Object.keys(data)
+            .filter(categoryName => data[categoryName].some(question => question.title.toLowerCase().includes(searchQuery.toLowerCase())))
+            .map((categoryName) => (
+              <CategoryTable key={categoryName} categoryName={categoryName} questions={data[categoryName]} searchQuery={searchQuery} />
             ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Action Buttons */}
-      <div className="flex gap-4">
-        <Button 
-          onClick={handleStartInterview}
-          className="bg-blue-600 hover:bg-blue-700"
-        >
-          Start New Interview
-        </Button>
-        <Button 
-          onClick={handleViewAllInterviews}
-          variant="outline"
-        >
-          View All Interviews
-        </Button>
+        </div>
       </div>
     </div>
-  )
+  );
+}
+
+function CategoryTable({ categoryName, questions, searchQuery }: CategoryTableProps) {
+  const filteredQuestions = questions.filter((question) => 
+    question.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="mb-6 bg-gray-800 rounded-lg p-4">
+      <h2 className="text-xl font-bold mb-2">{categoryName}</h2>
+      <div className="flex flex-col">
+        <div className="flex justify-between mb-2">
+          <div className="w-1/4 text-center">Status</div>
+          <div className="w-1/4 text-center">Problem</div>
+          <div className="w-1/4 text-center">Difficulty</div>
+          <div className="w-1/4 text-center">Solution</div>
+        </div>
+        {filteredQuestions.map((question, idx) => (
+          <QuestionRow key={idx} question={question} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function QuestionRow({ question }: QuestionRowProps) {
+  const router = useRouter();
+  const difficulty = question.level;
+  const difficultyColor =
+    difficulty === 'Easy'
+      ? 'text-green-400'
+      : difficulty === 'Medium'
+      ? 'text-yellow-400'
+      : 'text-red-400';
+
+  const handleClick = () => {
+    router.push(`/dashboard/interview?title=${encodeURIComponent(question.title)}`);
+  };
+
+  return (
+    <div className="flex justify-between border-b border-gray-700 py-2 cursor-pointer" onClick={handleClick}>
+      <div className="w-1/4 text-center">
+        <input
+          type="checkbox"
+          className="form-checkbox h-5 w-5 text-green-500"
+          readOnly
+        />
+      </div>
+      <div className="w-1/4 text-center">{question.title}</div>
+      <div className={`w-1/4 text-center ${difficultyColor}`}>{difficulty}</div>
+      <div className="w-1/4 text-center flex justify-center items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="h-6 w-6 text-gray-300">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+        </svg>
+      </div>
+    </div>
+  );
 }

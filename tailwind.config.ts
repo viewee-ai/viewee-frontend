@@ -1,13 +1,14 @@
 import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
 
+import daisyui from 'daisyui';
+
 const config: Config = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx,mdx}',
   ],
   prefix: '',
@@ -77,7 +78,29 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [
+    tailwindcssAnimate, 
+    daisyui, 
+  ],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          primary: "#1ccc84",
+          secondary: "#4b5563",
+          accent: "#fbbf24",
+          neutral: "#374151",
+          "base-100": "#1f2937",
+          info: "#3b82f6",
+          success: "#22c55e",
+          warning: "#facc15",
+          error: "#ef4444",
+        },
+      },
+      "dark", 
+      "light", 
+    ],
+  },
 };
 
 export default config;

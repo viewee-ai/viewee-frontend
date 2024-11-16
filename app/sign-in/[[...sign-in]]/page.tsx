@@ -28,7 +28,7 @@ export default function Page(): JSX.Element | null {
           const data = await response.json();
           console.log("Backend response:", data);
         }
-        router.push("/interview");
+        router.push("/dashboard");
       }
     };
 
