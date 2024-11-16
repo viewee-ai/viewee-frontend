@@ -139,23 +139,23 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
       <h1 className="text-2xl font-bold mb-2">{selectedQuestion.title}</h1>
 
       <div className="mb-4">
-        <h2 className="text-xl mb-2">Description</h2>
-        <p>{selectedQuestion.description}</p>
+      <h2 className="text-xl font-semibold mb-2 text-primary-green">Description</h2>
+      <p>{selectedQuestion.description}</p>
       </div>
 
       <div className="mb-4">
-        <h2 className="text-xl mb-2">Input</h2>
-        <pre>{selectedQuestion.input}</pre>
+      <h2 className="text-xl font-semibold mb-2 text-primary-green">Input</h2>
+      <pre>{selectedQuestion.input}</pre>
       </div>
 
       <div className="mb-4">
-        <h2 className="text-xl mb-2">Output</h2>
-        <pre>{selectedQuestion.output}</pre>
+      <h2 className="text-xl font-semibold mb-2 text-primary-green">Output</h2>
+      <pre>{selectedQuestion.output}</pre>
       </div>
 
       {selectedQuestion.explanation && (
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Explanation</h2>
+          <h2 className="text-xl font-semibold mb-2 text-primary-green">Explanation</h2>
           <p>{selectedQuestion.explanation}</p>
         </div>
       )}
@@ -163,14 +163,21 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
       {/* Monaco Code Editor */}
       <div className="bg-gray-700 p-4 rounded-lg">
         <Editor
-          height="300px"
+          height="400px"
           defaultLanguage="python"
           value={code}
           onChange={handleEditorChange}
           theme="vs-dark"
           options={{
             minimap: { enabled: false },
-            fontSize: 14,
+            fontSize: 16, 
+            fontFamily: "'Fira Code', 'Menlo', monospace", 
+            lineHeight: 24, 
+            fontLigatures: true, 
+            padding: { top: 16, bottom: 16 }, 
+            scrollBeyondLastLine: false,
+            renderLineHighlight: "all",
+            cursorBlinking: "smooth",
           }}
         />
       </div>
