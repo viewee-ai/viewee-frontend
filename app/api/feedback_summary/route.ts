@@ -1,26 +1,29 @@
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
+import { z } from "zod";
+import { zodResponseFormat } from "openai/helpers/zod";
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
-    const { session_id, code, transcript } = await req.json();
+    const { code, transcript } = await req.json();
 
-    if (!session_id) {
-      return NextResponse.json(
-        { error: "Session ID is required." },
-        { status: 400 }
-      );
-    }
+    const Feedback = z.object({
+      Score: z.string(),
+      thought_process: z.string(),
+      areas_of_excellence: z.string(),
+      areas_of_improvement: z.string(),
+    });
+  
 
     // Construct the prompt for OpenAI
     const prompt = `
     You are a technical interviewer. Evaluate the following code and thought process:
 
     Code:
-    ${code || "No code provided"}
+    ${code}
 
     Thought Process:
-    ${transcript || "No thought process provided"}
+    ${transcript}
 
     Provide the following:
     1. Code Correctness Score (0-100%).
@@ -42,12 +45,13 @@ export async function POST(req) {
       ],
       temperature: 0.8,
       max_tokens: 500,
+      response_format: zodResponseFormat(Feedback, 'evaluation_feedback')
     });
 
     const result = response.choices[0].message?.content;
 
     // Parse the response to structure the data
-    const feedback = JSON.parse(result || "{}");
+    /* const feedback = JSON.parse(result || "{}");
 
     const formattedResponse = {
       session_id,
@@ -57,10 +61,10 @@ export async function POST(req) {
       areas_for_improvement: feedback.areas_for_improvement || "N/A",
       full_code: code || "No code provided",
       timestamp: new Date().toISOString(),
-    };
-
-    return NextResponse.json(formattedResponse);
-  } catch (error) {
+    }; */
+    console.log("OpenAI Response:", result);
+    return NextResponse.json(result);
+  } catch (error : any) {
     console.error("Error in API:", error.message);
     return NextResponse.json(
       { error: "Evaluation failed. Please try again." },

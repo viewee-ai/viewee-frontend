@@ -2,20 +2,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
-//import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
 const FeedbackPage: React.FC = () => {
   const [codeScore, setCodeScore] = useState<number | null>(null);
-  const [thoughtFeedback, setThoughtFeedback] = useState<string | null>(null);
+  // const [thoughtFeedback, setThoughtFeedback] = useState<string | null>(null);
   const [strengths, setStrengths] = useState<string | null>(null);
   const [improvements, setImprovements] = useState<string | null>(null);
   const [solutionCode, setSolutionCode] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -33,6 +31,8 @@ const FeedbackPage: React.FC = () => {
     const improvementsText = searchParams.get('improvements');
     const solutionCodeText = searchParams.get('solutionCode');
 
+    
+
     if (code && strengthsText && improvementsText && solutionCodeText) {
       setCodeScore(Number(code));
       setStrengths(strengthsText);
@@ -41,10 +41,9 @@ const FeedbackPage: React.FC = () => {
       setLoading(false);
     } else {
       console.error("Missing feedback data in query parameters.");
+      setLoading(false);
     }
   }, [searchParams]);
-
-};
 
   if (loading) {
     return (

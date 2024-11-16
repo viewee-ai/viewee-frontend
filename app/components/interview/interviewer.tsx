@@ -330,7 +330,10 @@ const InterviewerComponent: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ session_id: sessionId }),
+        body: JSON.stringify({ 
+          transcript: transcript.map(item => item.message).join(" "),
+          code: code,
+        }),
       });
 
       if (!response.ok) {
@@ -338,11 +341,11 @@ const InterviewerComponent: React.FC = () => {
       }
 
       const data = await response.json();
-      const { code, strengthsText, improvementsText, solutionCodeText } = data;
+      const { score, strengthsText, improvementsText, solutionCodeText } = data;
 
       // Construct the URL with query parameters
       const url = new URL("/feedback", window.location.origin);
-      url.searchParams.append("codeScore", code);
+      url.searchParams.append("codeScore", score);
       url.searchParams.append("strengths", strengthsText);
       url.searchParams.append("improvements", improvementsText);
       url.searchParams.append("solutionCode", solutionCodeText);
