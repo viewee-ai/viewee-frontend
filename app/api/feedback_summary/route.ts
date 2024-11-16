@@ -13,7 +13,6 @@ export async function POST(req: Request) {
       areas_of_excellence: z.string(),
       areas_of_improvement: z.string(),
     });
-  
 
     // Construct the prompt for OpenAI
     const prompt = `
@@ -45,7 +44,7 @@ export async function POST(req: Request) {
       ],
       temperature: 0.8,
       max_tokens: 500,
-      response_format: zodResponseFormat(Feedback, 'evaluation_feedback')
+      response_format: zodResponseFormat(Feedback, "evaluation_feedback"),
     });
 
     const result = response.choices[0].message?.content;
@@ -62,9 +61,10 @@ export async function POST(req: Request) {
       full_code: code || "No code provided",
       timestamp: new Date().toISOString(),
     }; */
+
     console.log("OpenAI Response:", result);
-    return NextResponse.json(result);
-  } catch (error : any) {
+    return NextResponse.json(result, { status: 200 });
+  } catch (error: any) {
     console.error("Error in API:", error.message);
     return NextResponse.json(
       { error: "Evaluation failed. Please try again." },

@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 
 const FeedbackPage: React.FC = () => {
-  const [codeScore, setCodeScore] = useState<number | null>(null);
+  const [codeScore, setCodeScore] = useState<string | null>(null);
   // const [thoughtFeedback, setThoughtFeedback] = useState<string | null>(null);
   const [strengths, setStrengths] = useState<string | null>(null);
   const [improvements, setImprovements] = useState<string | null>(null);
@@ -26,15 +26,13 @@ const FeedbackPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const code = searchParams.get('codeScore');
-    const strengthsText = searchParams.get('strengths');
-    const improvementsText = searchParams.get('improvements');
-    const solutionCodeText = searchParams.get('solutionCode');
+    const score = searchParams.get("codeScore");
+    const strengthsText = searchParams.get("strengths");
+    const improvementsText = searchParams.get("improvements");
+    const solutionCodeText = searchParams.get("solutionCode");
 
-    
-
-    if (code && strengthsText && improvementsText && solutionCodeText) {
-      setCodeScore(Number(code));
+    if (score && strengthsText && improvementsText && solutionCodeText) {
+      setCodeScore(score);
       setStrengths(strengthsText);
       setImprovements(improvementsText);
       setSolutionCode(solutionCodeText);

@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect, useCallback} from 'react';
-import Editor from '@monaco-editor/react';
-import questions from '@/data/75_blind.json';
-import { useSession  } from '@/app/utils/session_provider';
-import { useAppContext } from '@/app/utils/AppContext';
+import React, { useState, useEffect, useCallback } from "react";
+import Editor from "@monaco-editor/react";
+import questions from "@/data/75_blind.json";
+import { useSession } from "@/app/utils/session_provider";
+import { useAppContext } from "@/app/utils/AppContext";
 
 type Question = {
   title: string;
@@ -22,19 +22,23 @@ interface MainContentProps {
   title: string;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ title })=> {
+const MainContent: React.FC<MainContentProps> = ({ title }) => {
   //const [code, setCode] = useState("// Write your code here...");
   const { code, setCode } = useAppContext();
-  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
+  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
+    null
+  );
   // const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
   // const [sessionId, setSessionId] = useState<string | null>(null);
-  const { sessionId, setSessionId } = useSession();
+  const { setSessionId } = useSession();
 
   useEffect(() => {
     let foundQuestion: Question | undefined;
     for (const category in questions as Questions) {
       if (questions.hasOwnProperty(category)) {
-        foundQuestion = (questions as Questions)[category].find((q) => q.title === title);
+        foundQuestion = (questions as Questions)[category].find(
+          (q) => q.title === title
+        );
         if (foundQuestion) break;
       }
     }
@@ -45,19 +49,25 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
   }, [title]);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-    // Initialize question data in the backend and store session ID
-    const initializeQuestion = useCallback(async (question: Question) => {
-      const response = await fetch('http://localhost:8000/api/initialize-question', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(question),
-      });
+  // Initialize question data in the backend and store session ID
+  const initializeQuestion = useCallback(
+    async (question: Question) => {
+      const response = await fetch(
+        "http://localhost:8000/api/initialize-question",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(question),
+        }
+      );
       const result = await response.json();
       setSessionId(result.session_id);
       console.log("Session initialized with ID:", result.session_id);
-    }, [setSessionId]);
+    },
+    [setSessionId]
+  );
 
-    /* const sendIncrementalFeedback = async (code: string) => {
+  /* const sendIncrementalFeedback = async (code: string) => {
       if (!sessionId) {
         console.warn("No session ID available from main content. Skipping sendIncrementalFeedback.");
         return;
@@ -97,7 +107,6 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
     // TODO: Handle the evaluation result (e.g., display feedback)
   }; */
 
-
   const handleEditorChange = (value: string | undefined) => {
     setCode(value || "");
 
@@ -114,15 +123,16 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
     setChangeTimeout(timeout); */
   };
 
-
   if (!selectedQuestion) return <div>Loading...</div>;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
   return (
     <div className="flex-1 p-6 bg-gray-800 text-white">
       <div className="flex justify-between items-center mb-4">
-        <a href="#" className="text-teal-400">Back to Dashboard</a>
+        <a href="#" className="text-teal-400">
+          Back to Dashboard
+        </a>
         <span className="text-green-400">Level 2</span>
       </div>
 
