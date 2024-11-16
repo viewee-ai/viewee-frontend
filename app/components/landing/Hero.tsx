@@ -49,10 +49,10 @@ export function Hero() {
               </span>
             </h1>
 
-            <p className="max-w-xl mx-auto mt-4 text-base font-light lg:text-lg text-muted-foreground tracking-tighter">
-              Practice coding interviews 24/7 with our AI interviewer. Get
-              instant feedback on your code, communication skills, and
-              problem-solving approach. Level up your interview game today!
+            <p className="max-w-xl mx-auto mt-4 font-light text-2xl text-muted-foreground tracking-tighter">
+              Practice coding interviews 24/7 with Viewee. Get instant feedback
+              on your code, communication skills, and problem-solving approach.
+              Level up your interview game today!
             </p>
             <div className="flex items-center gap-x-5 w-full justify-center mt-5 ">
               {/* <LoginLink> */}
