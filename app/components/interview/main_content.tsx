@@ -23,7 +23,6 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ title }) => {
-  //const [code, setCode] = useState("// Write your code here...");
   const { code, setCode } = useAppContext();
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null

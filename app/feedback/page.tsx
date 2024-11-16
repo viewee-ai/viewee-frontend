@@ -60,7 +60,7 @@ const FeedbackPage: React.FC = () => {
   }
 
   return (
-    <div className="px-20 bg-gray-800 h-screen">
+    <div className="px-20 bg-gray-800 h-full">
       {/* Header */}
       <div className="text-5xl text-center font-semibold pb-6">
         Interview <span className="text-green-500">Insight</span>
@@ -71,7 +71,7 @@ const FeedbackPage: React.FC = () => {
         <div className="border rounded-[20px] min-w-[300px] p-5 text-center bg-gray-900">
           <div className="text-3xl font-semibold">Your Score:</div>
           <div className="text-3xl font-bold text-green-500">
-            {codeScore !== null ? `${codeScore}%` : "N/A"}
+            {codeScore !== null ? `${codeScore}` : "N/A"}
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@ const FeedbackPage: React.FC = () => {
       </div>
 
       {/* Solution Code Section */}
-      <div className="mt-10">
+      <div className="my-10">
         <h3 className="text-2xl font-semibold pb-4 text-left">
           📝 Solution Code
         </h3>
