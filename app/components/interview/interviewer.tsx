@@ -421,18 +421,18 @@ const InterviewerComponent: React.FC = () => {
       </div>
 
       {/* Bottom Section: Control Buttons */}
-      <div className="flex justify-between">
+      <div className="flex justify-between space-x-3">
         <button
           className={`bg-${
-            isRecording ? "red" : "blue"
-          }-500 text-white py-2 px-4 rounded`}
+            isRecording ? "purple-600" : "blue-600"
+          } text-white py-2 px-4 rounded-[15px]`}
           onClick={handleMicClick}
         >
           {isRecording ? "Stop Recording" : "Start Recording"}
         </button>
         {/* <button className="bg-yellow-500 text-white py-2 px-4 rounded">Interrupt</button> */}
         <button
-          className="bg-red-500 text-white py-2 px-4 rounded"
+          className="bg-red-700 text-white py-2 px-4 rounded-[15px]"
           onClick={handleFinishInterview}
         >
           Finish Interview

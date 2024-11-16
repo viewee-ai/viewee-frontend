@@ -90,7 +90,7 @@ const FeedbackPage: React.FC = () => {
               strengths.split("\n").map((strength, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-800 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-white rounded-lg"
                 >
                   <h4 className="text-xl font-semibold">
                     You Identified the Solution Well
@@ -99,7 +99,7 @@ const FeedbackPage: React.FC = () => {
                 </Card>
               ))
             ) : (
-              <Card className="p-4 bg-gray-800 text-white rounded-lg">
+              <Card className="p-4 bg-gray-900 text-white rounded-lg">
                 <p>No strengths available.</p>
               </Card>
             )}
@@ -116,7 +116,7 @@ const FeedbackPage: React.FC = () => {
               improvements.split("\n").map((improvement, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-800 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-white rounded-lg"
                 >
                   <h4 className="text-xl font-semibold">
                     Enhance Code Quality
@@ -125,7 +125,7 @@ const FeedbackPage: React.FC = () => {
                 </Card>
               ))
             ) : (
-              <Card className="p-4 bg-gray-800 text-white rounded-lg">
+              <Card className="p-4 bg-gray-900 text-white rounded-lg">
                 <p>No improvements available.</p>
               </Card>
             )}
