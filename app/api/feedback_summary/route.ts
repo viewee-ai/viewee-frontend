@@ -13,7 +13,6 @@ export async function POST(req: Request) {
       areas_of_excellence: z.string(),
       areas_of_improvement: z.string(),
     });
-  
 
     // Construct the prompt for OpenAI
     const prompt = `
@@ -45,29 +44,26 @@ export async function POST(req: Request) {
       ],
       temperature: 0.8,
       max_tokens: 500,
-      response_format: zodResponseFormat(Feedback, 'evaluation_feedback')
+      response_format: zodResponseFormat(Feedback, "evaluation_feedback"),
     });
 
     const result = response.choices[0].message?.content;
 
-    // Parse the response to structure the data
-    /* const feedback = JSON.parse(result || "{}");
-
-    const formattedResponse = {
-      session_id,
-      code_correctness: feedback.code_correctness || "N/A",
-      thought_process_feedback: feedback.thought_process_feedback || "N/A",
-      areas_of_excellence: feedback.areas_of_excellence || "N/A",
-      areas_for_improvement: feedback.areas_for_improvement || "N/A",
-      full_code: code || "No code provided",
-      timestamp: new Date().toISOString(),
-    }; */
     console.log("OpenAI Response:", result);
-    return NextResponse.json(result);
-  } catch (error : any) {
-    console.error("Error in API:", error.message);
+    return NextResponse.json(result, { status: 200 });
+  } catch (error: unknown) {
+    // Narrow down the type of error
+    if (error instanceof Error) {
+      console.error("Error in API:", error.message);
+      return NextResponse.json(
+        { error: error.message || "Evaluation failed. Please try again." },
+        { status: 500 }
+      );
+    }
+
+    console.error("Unexpected error:", error);
     return NextResponse.json(
-      { error: "Evaluation failed. Please try again." },
+      { error: "An unknown error occurred." },
       { status: 500 }
     );
   }

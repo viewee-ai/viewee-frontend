@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 
 const FeedbackPage: React.FC = () => {
-  const [codeScore, setCodeScore] = useState<number | null>(null);
+  const [codeScore, setCodeScore] = useState<string | null>(null);
   // const [thoughtFeedback, setThoughtFeedback] = useState<string | null>(null);
   const [strengths, setStrengths] = useState<string | null>(null);
   const [improvements, setImprovements] = useState<string | null>(null);
@@ -26,15 +26,13 @@ const FeedbackPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const code = searchParams.get('codeScore');
-    const strengthsText = searchParams.get('strengths');
-    const improvementsText = searchParams.get('improvements');
-    const solutionCodeText = searchParams.get('solutionCode');
+    const score = searchParams.get("codeScore");
+    const strengthsText = searchParams.get("strengths");
+    const improvementsText = searchParams.get("improvements");
+    const solutionCodeText = searchParams.get("solutionCode");
 
-    
-
-    if (code && strengthsText && improvementsText && solutionCodeText) {
-      setCodeScore(Number(code));
+    if (score && strengthsText && improvementsText && solutionCodeText) {
+      setCodeScore(score);
       setStrengths(strengthsText);
       setImprovements(improvementsText);
       setSolutionCode(solutionCodeText);
@@ -62,7 +60,7 @@ const FeedbackPage: React.FC = () => {
   }
 
   return (
-    <div className="px-20 bg-gray-800 h-screen">
+    <div className="px-20 bg-gray-800 h-full">
       {/* Header */}
       <div className="text-5xl text-center font-semibold pb-6">
         Interview <span className="text-green-500">Insight</span>
@@ -73,7 +71,7 @@ const FeedbackPage: React.FC = () => {
         <div className="border rounded-[20px] min-w-[300px] p-5 text-center bg-gray-900">
           <div className="text-3xl font-semibold">Your Score:</div>
           <div className="text-3xl font-bold text-green-500">
-            {codeScore !== null ? `${codeScore}%` : "N/A"}
+            {codeScore !== null ? `${codeScore}` : "N/A"}
           </div>
         </div>
       </div>
@@ -92,7 +90,7 @@ const FeedbackPage: React.FC = () => {
               strengths.split("\n").map((strength, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-800 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-white rounded-lg"
                 >
                   <h4 className="text-xl font-semibold">
                     You Identified the Solution Well
@@ -101,7 +99,7 @@ const FeedbackPage: React.FC = () => {
                 </Card>
               ))
             ) : (
-              <Card className="p-4 bg-gray-800 text-white rounded-lg">
+              <Card className="p-4 bg-gray-900 text-white rounded-lg">
                 <p>No strengths available.</p>
               </Card>
             )}
@@ -118,7 +116,7 @@ const FeedbackPage: React.FC = () => {
               improvements.split("\n").map((improvement, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-800 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-white rounded-lg"
                 >
                   <h4 className="text-xl font-semibold">
                     Enhance Code Quality
@@ -127,7 +125,7 @@ const FeedbackPage: React.FC = () => {
                 </Card>
               ))
             ) : (
-              <Card className="p-4 bg-gray-800 text-white rounded-lg">
+              <Card className="p-4 bg-gray-900 text-white rounded-lg">
                 <p>No improvements available.</p>
               </Card>
             )}
@@ -136,7 +134,7 @@ const FeedbackPage: React.FC = () => {
       </div>
 
       {/* Solution Code Section */}
-      <div className="mt-10">
+      <div className="my-10">
         <h3 className="text-2xl font-semibold pb-4 text-left">
           📝 Solution Code
         </h3>
