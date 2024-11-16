@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import HeroImage from "@/public/demo.png";
 import { ThemeToggle } from "./ThemeToggle";
 import { useRouter } from "next/navigation";
 
@@ -75,39 +74,7 @@ export function Hero() {
               width="100%"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <defs>
-                <linearGradient
-                  id="gradient1"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                >
-                  <stop offset="0%" stopColor="#1ccc84" />
-                  <stop offset="100%" stopColor="#1ccc84" />
-                </linearGradient>
-                <filter
-                  id="filter0_f_10_20"
-                  x="-160.333"
-                  y="-160.333"
-                  width="720.666"
-                  height="720.666"
-                  filterUnits="userSpaceOnUse"
-                  colorInterpolationFilters="sRGB"
-                >
-                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                  <feBlend
-                    in="SourceGraphic"
-                    in2="BackgroundImageFix"
-                    mode="normal"
-                    result="shape"
-                  />
-                  <feGaussianBlur
-                    stdDeviation="50"
-                    result="effect1_foregroundBlur_10_20"
-                  />
-                </filter>
-              </defs>
+              
               <g clipPath="url(#clip0_10_20)">
                 <g filter="url(#filter0_f_10_20)">
                   <path
@@ -130,12 +97,7 @@ export function Hero() {
               </g>
             </svg>
 
-            <Image
-              src={HeroImage}
-              alt="Interactive coding interview environment"
-              priority
-              className="relative object-cover w-full border rounded-lg shadow-2xl lg:rounded-2xl"
-            />
+
           </div>
         </div>
       </section>
