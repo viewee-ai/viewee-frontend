@@ -129,7 +129,7 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
   return (
     <div className="flex-1 p-6 bg-gray-800 text-white">
       <div className="flex justify-between items-center mb-4">
-        <a href="#" className="text-teal-400">
+        <a href="/dashboard" className="text-green-400">
           Back to Dashboard
         </a>
         <span className="text-green-400">Level 2</span>
