@@ -1,6 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import questions from '@/data/75_blind.json';
 
 interface Question {
@@ -30,7 +33,7 @@ const isValidLevel = (level: string): level is 'Easy' | 'Medium' | 'Hard' => {
   return ['Easy', 'Medium', 'Hard'].includes(level);
 };
 
-export default function Home() {
+export default function DashboardPage() {  // Changed from Home to DashboardPage
   const [data, setData] = useState<QuestionsData>({});
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -47,6 +50,18 @@ export default function Home() {
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen text-white">
+      <div className="flex items-center justify-between mb-6">
+        <Link href="/">
+          <Button 
+            variant="ghost" 
+            className="flex items-center gap-2 hover:bg-gray-800 text-white"
+          >
+            <Home className="w-5 h-5" />
+            <span>Home</span>
+          </Button>
+        </Link>
+      </div>
+
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">5 / 75</h1>
         <p className="bg-gray-800 text-gray-300 p-2 rounded">
