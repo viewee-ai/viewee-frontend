@@ -423,8 +423,8 @@ const InterviewerComponent: React.FC = () => {
       {/* Bottom Section: Control Buttons */}
       <div className="flex justify-between space-x-3">
         <button
-          className={`bg-${
-            isRecording ? "purple-600" : "blue-600"
+          className={`${
+            isRecording ? "bg-red-600" : "bg-blue-600"
           } text-white py-2 px-4 rounded-[15px]`}
           onClick={handleMicClick}
         >
@@ -432,7 +432,7 @@ const InterviewerComponent: React.FC = () => {
         </button>
         {/* <button className="bg-yellow-500 text-white py-2 px-4 rounded">Interrupt</button> */}
         <button
-          className="bg-red-700 text-white py-2 px-4 rounded-[15px]"
+          className="bg-green-600 text-white py-2 px-4 rounded-[15px]"
           onClick={handleFinishInterview}
         >
           Finish Interview
