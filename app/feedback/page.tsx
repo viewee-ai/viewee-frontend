@@ -1,11 +1,11 @@
+// app/feedback/page.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSession } from "@/app/utils/session_provider";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useRouter } from "next/navigation";
 
 const FeedbackPage: React.FC = () => {
   const [codeScore, setCodeScore] = useState<number | null>(null);
@@ -15,7 +15,7 @@ const FeedbackPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
-  const { sessionId } = useSession();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     document.body.classList.add("bg-gray-800");
@@ -27,51 +27,23 @@ const FeedbackPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const fetchFeedback = async () => {
-      try {
-        setLoading(true);
-        // Placeholder for API call to get feedback data from backend
-        const response = await fetch(
-          "http://localhost:8000/api/feedback-summary",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              session_id: sessionId,
-              code: null, // or actual code if available
-              transcript: null, // or actual transcript if available
-              status: "Thinking",
-            }),
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        console.log(data);
-        const { code, strengthsText, improvementsText, solutionCodeText } =
-          data;
-        setCodeScore(code);
-        console.log("Code Score:", code);
+    const code = searchParams.get('codeScore');
+    const strengthsText = searchParams.get('strengths');
+    const improvementsText = searchParams.get('improvements');
+    const solutionCodeText = searchParams.get('solutionCode');
 
-        setStrengths(strengthsText);
-        console.log("Strengths:", strengthsText);
+    if (code && strengthsText && improvementsText && solutionCodeText) {
+      setCodeScore(Number(code));
+      setStrengths(strengthsText);
+      setImprovements(improvementsText);
+      setSolutionCode(solutionCodeText);
+      setLoading(false);
+    } else {
+      console.error("Missing feedback data in query parameters.");
+    }
+  }, [searchParams]);
 
-        setImprovements(improvementsText);
-        console.log("Improvements:", improvementsText);
-
-        setSolutionCode(solutionCodeText);
-        console.log("Solution Code:", solutionCodeText);
-      } catch (error) {
-        console.error("Error fetching feedback:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFeedback();
-  }, [sessionId]);
+};
 
   if (loading) {
     return (

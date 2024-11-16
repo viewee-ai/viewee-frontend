@@ -26,7 +26,7 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
   //const [code, setCode] = useState("// Write your code here...");
   const { code, setCode } = useAppContext();
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
-  const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
+  // const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
   // const [sessionId, setSessionId] = useState<string | null>(null);
   const { sessionId, setSessionId } = useSession();
 
@@ -57,7 +57,7 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
       console.log("Session initialized with ID:", result.session_id);
     }, [setSessionId]);
 
-    const sendIncrementalFeedback = async (code: string) => {
+    /* const sendIncrementalFeedback = async (code: string) => {
       if (!sessionId) {
         console.warn("No session ID available from main content. Skipping sendIncrementalFeedback.");
         return;
@@ -78,7 +78,7 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
       console.log("Code Feedback:", result.feedback);
   
     };
-
+ */
   /* const sendCodeToBackend = async (code: string) => {
     const response = await fetch('http://localhost:8000/api/evaluate', {
       method: 'POST',
@@ -102,7 +102,7 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
     setCode(value || "");
 
     // Debounce the code change event
-    if(changeTimeout) {
+    /* if(changeTimeout) {
       clearTimeout(changeTimeout);
     }
 
@@ -111,7 +111,7 @@ const MainContent: React.FC<MainContentProps> = ({ title })=> {
       // sendCodeToBackend(value || ""); // Send code to the backend for evaluation
       sendIncrementalFeedback(value || ""); // Send incremental code updates to the backend
     }, 5000);
-    setChangeTimeout(timeout);
+    setChangeTimeout(timeout); */
   };
 
 

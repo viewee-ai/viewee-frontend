@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession  } from '@/app/utils/session_provider';
-
+import { useAppContext } from '@/app/utils/AppContext';
 
 interface TranscriptMessage {
   sender: 'user' | 'interviewer';
@@ -19,6 +19,7 @@ const InterviewerComponent: React.FC = () => {
   const ttsSocketRef = useRef<WebSocket | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const { sessionId } = useSession();
+  const { code } = useAppContext();
   const router = useRouter();
   
 
@@ -160,6 +161,7 @@ const InterviewerComponent: React.FC = () => {
       return;
     }
     console.log("Sending transcript to backend:", transcript);
+    console.log("Sending CODE to backend:", code);
     try {
       const response = await fetch('http://localhost:8000/api/incremental-feedback', {
         method: 'POST',
@@ -167,6 +169,7 @@ const InterviewerComponent: React.FC = () => {
         body: JSON.stringify({
           session_id: sessionId,
           transcript: transcript.map(item => item.message).join(" "),
+          code: code,
           status: 'Thinking',
         }),
       });
@@ -312,7 +315,12 @@ const InterviewerComponent: React.FC = () => {
   };
 
   const handleFinishInterview = () => {
-    router.push('/feedback');
+    if (sessionId) {
+      console.log("Finishing interview session:", sessionId);
+      router.push(`/feedback?sessionId=${sessionId}`);
+    } else {
+      console.warn("No session ID available. Cannot navigate to feedback page.");
+    }
   };
 
   return (
