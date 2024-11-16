@@ -3,18 +3,19 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "@/app/utils/session_provider";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+//import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 
 const FeedbackPage: React.FC = () => {
   const [codeScore, setCodeScore] = useState<number | null>(null);
+  const [thoughtFeedback, setThoughtFeedback] = useState<string | null>(null);
   const [strengths, setStrengths] = useState<string | null>(null);
   const [improvements, setImprovements] = useState<string | null>(null);
   const [solutionCode, setSolutionCode] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const router = useRouter();
+  //const router = useRouter();
   const { sessionId } = useSession();
 
   useEffect(() => {
@@ -31,39 +32,28 @@ const FeedbackPage: React.FC = () => {
       try {
         setLoading(true);
         // Placeholder for API call to get feedback data from backend
-        const response = await fetch(
-          "http://localhost:8000/api/feedback-summary",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              session_id: sessionId,
-              code: null, // or actual code if available
-              transcript: null, // or actual transcript if available
-              status: "Thinking",
-            }),
-          }
-        );
+        const response = await fetch("/api/feedback_summary", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            session_id: sessionId,
+            code: null, // or actual code if available
+            transcript: null, // or actual transcript if available
+            status: "Thinking",
+          }),
+        });
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
         console.log(data);
-        const { code, strengthsText, improvementsText, solutionCodeText } =
-          data;
-        setCodeScore(code);
-        console.log("Code Score:", code);
-
-        setStrengths(strengthsText);
-        console.log("Strengths:", strengthsText);
-
-        setImprovements(improvementsText);
-        console.log("Improvements:", improvementsText);
-
-        setSolutionCode(solutionCodeText);
-        console.log("Solution Code:", solutionCodeText);
+        setCodeScore(data.code_correctness);
+        setThoughtFeedback(data.thought_process_feedback);
+        setStrengths(data.areas_of_excellence);
+        setImprovements(data.areas_for_improvement);
+        setSolutionCode(data.full_code);
       } catch (error) {
         console.error("Error fetching feedback:", error);
       } finally {

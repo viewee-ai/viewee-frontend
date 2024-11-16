@@ -323,8 +323,44 @@ const InterviewerComponent: React.FC = () => {
     return result.buffer;
   };
 
-  const handleFinishInterview = () => {
-    router.push("/feedback");
+  const handleFinishInterview = async () => {
+    if (!sessionId) {
+      console.warn(
+        "No session ID available. Cannot navigate to feedback page."
+      );
+      return;
+    }
+
+    console.log("Finishing interview session:", sessionId);
+
+    try {
+      const response = await fetch("/api/feedback_summary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ session_id: sessionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      const { code, strengthsText, improvementsText, solutionCodeText } = data;
+
+      // Construct the URL with query parameters
+      const url = new URL("/feedback", window.location.origin);
+      url.searchParams.append("codeScore", code);
+      url.searchParams.append("strengths", strengthsText);
+      url.searchParams.append("improvements", improvementsText);
+      url.searchParams.append("solutionCode", solutionCodeText);
+
+      // Navigate to FeedbackPage with feedback data as query parameters
+      router.push(url.toString());
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+    }
   };
 
   return (
