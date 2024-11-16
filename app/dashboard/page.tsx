@@ -33,7 +33,7 @@ const isValidLevel = (level: string): level is 'Easy' | 'Medium' | 'Hard' => {
   return ['Easy', 'Medium', 'Hard'].includes(level);
 };
 
-export default function DashboardPage() {  // Changed from Home to DashboardPage
+export default function DashboardPage() {  
   const [data, setData] = useState<QuestionsData>({});
   const [searchQuery, setSearchQuery] = useState<string>('');
 
