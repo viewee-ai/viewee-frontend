@@ -2,19 +2,30 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 
-const FeedbackPage: React.FC = () => {
-  const [codeScore, setCodeScore] = useState<string | null>(null);
-  // const [thoughtFeedback, setThoughtFeedback] = useState<string | null>(null);
-  const [strengths, setStrengths] = useState<string | null>(null);
-  const [improvements, setImprovements] = useState<string | null>(null);
-  const [solutionCode, setSolutionCode] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+interface Solution {
+  approach: string;
+  code: string;
+  time_complexity: string;
+  space_complexity: string;
+}
 
-  const searchParams = useSearchParams();
+interface SolutionsData {
+  problem_name: string;
+  solutions: Solution[];
+  length: number;
+}
+
+const FeedbackPage: React.FC = () => {
+  const [averageScore, setAverageScore] = useState<number | null>(null);
+  const [codeScore, setCodeScore] = useState<number | null>(null);
+  //const [thoughtProcessScore, setThoughtProcessScore] = useState<number | null>(null);
+  const [strengths, setStrengths] = useState<string>("");
+  const [improvements, setImprovements] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [solutionsData, setSolutionsData] = useState<SolutionsData | null>(null);
 
   useEffect(() => {
     document.body.classList.add("bg-gray-800");
@@ -26,22 +37,44 @@ const FeedbackPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const score = searchParams.get("codeScore");
-    const strengthsText = searchParams.get("strengths");
-    const improvementsText = searchParams.get("improvements");
-    const solutionCodeText = searchParams.get("solutionCode");
+    const params = new URLSearchParams(window.location.search);
+    const averageScoreParam = Number(params.get("averageScore"));
+    const codeScoreParam = Number(params.get("codeScore"));
+    // const thoughtProcessScoreParam = Number(params.get("thoughtProcessScore"));
+    const strengthsParam = params.get("strengths") || "";
+    const improvementsParam = params.get("improvements") || "";
+    const questionParam = params.get("question") || "";
 
-    if (score && strengthsText && improvementsText && solutionCodeText) {
-      setCodeScore(score);
-      setStrengths(strengthsText);
-      setImprovements(improvementsText);
-      setSolutionCode(solutionCodeText);
-      setLoading(false);
-    } else {
+    setAverageScore(averageScoreParam);
+    setCodeScore(codeScoreParam);
+    // setThoughtProcessScore(thoughtProcessScoreParam);
+    setStrengths(strengthsParam);
+    setImprovements(improvementsParam);
+    
+    // Retrieve solution code from DB here
+    const fetchSolutions = async () => {  
+      try {
+        console.log("Fetching solutions for question:", questionParam);
+        const response = await fetch("http://localhost:8000/api/get-solutions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ problem_name: questionParam }),
+        });
+        const result = await response.json();
+        console.log("Solutions:", result);
+        setSolutionsData(result);
+      } catch (error) {
+        console.error("Error fetching solutions:", error);
+      }
+    };
+  
+    fetchSolutions();
+
+    if (!averageScoreParam && !strengthsParam && !improvementsParam && !solutionsData) {
       console.error("Missing feedback data in query parameters.");
-      setLoading(false);
     }
-  }, [searchParams]);
+    setLoading(false);
+  }, []);
 
   if (loading) {
     return (
@@ -138,18 +171,23 @@ const FeedbackPage: React.FC = () => {
         <h3 className="text-2xl font-semibold pb-4 text-left">
           📝 Solution Code
         </h3>
-        <Card className="p-4 bg-gray-800 text-white rounded-lg">
-          <pre
-            className="bg-gray-900 p-4 rounded-md overflow-x-auto"
-            style={{
-              maxHeight: "400px",
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-all",
-            }}
-          >
-            {solutionCode ? solutionCode : "No solution code available."}
-          </pre>
-        </Card>
+        {solutionsData.solutions.map((solution: Solution, index: number) => (
+          <Card key={index} className="p-4 bg-gray-800 text-white rounded-lg mb-4">
+            <h4 className="text-xl font-semibold">{solution.approach}</h4>
+            <pre
+              className="bg-gray-900 p-4 rounded-md overflow-x-auto"
+              style={{
+                maxHeight: "400px",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-all",
+              }}
+            >
+              <code>{solution.code}</code>
+            </pre>
+            <p>Time Complexity: {solution.time_complexity}</p>
+            <p>Space Complexity: {solution.space_complexity}</p>
+          </Card>
+        ))}
       </div>
     </div>
   );
