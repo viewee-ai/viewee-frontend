@@ -21,7 +21,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <ClerkProvider>
       <SessionProvider>
         <html lang="en" className={inter.className}>
-          <body className="flex flex-col gap-4">
+          <body className="flex flex-col">
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
