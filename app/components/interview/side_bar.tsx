@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-16 h-screen bg-gray-900 flex flex-col justify-center items-center py-4 px-10">
+    <div className="w-full md:w-16 h-16 md:h-screen bg-gray-900 flex flex-col md:justify-center items-center py-4 px-4 md:px-10">
       {/* Top Section: Timer */}
       <div className="text-white mb-8">
         <div className="relative flex items-center justify-center w-16 h-16 rounded-full border-4 border-blue-500">

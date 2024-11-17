@@ -11,10 +11,10 @@ const InterviewPage = () => {
   const title = searchParams.get('title');
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col md:flex-row h-screen">
       <Sidebar />
 
-      <div className="flex-1 flex">
+      <div className="flex-1 flex flex-col md:flex-row">
         <SessionProvider>
           <AppProvider>
             <MainContent title={title || 'Two Sum'} />

@@ -8,6 +8,7 @@ import { useAppContext } from "@/app/utils/AppContext";
 
 type Question = {
   title: string;
+  level: string;
   description: string;
   input: string;
   output: string;
@@ -23,7 +24,7 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ title }) => {
-  const { code, setCode } = useAppContext();
+  const { code, setCode, setQuestion } = useAppContext();
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
     null
   );
@@ -43,9 +44,10 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
     }
     if (foundQuestion) {
       setSelectedQuestion(foundQuestion);
-      initializeQuestion(foundQuestion); // Initialize the new question in the backend
+      setQuestion(foundQuestion);
+      initializeQuestion(foundQuestion); 
     }
-  }, [title]);
+  }, [title, setQuestion]);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Initialize question data in the backend and store session ID
@@ -127,12 +129,15 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
-    <div className="flex-1 p-6 bg-gray-800 text-white">
+    <div className="flex-1 p-6 bg-gray-800 text-white overflow-auto">
       <div className="flex justify-between items-center mb-4">
         <a href="/dashboard" className="text-green-400">
           Back to Dashboard
         </a>
-        <span className="text-green-400">Level 2</span>
+        <div className="text-sm">
+          <span className="font-semibold text-gray-500">Level:</span>{" "}
+          {selectedQuestion.level}
+        </div>
       </div>
 
       {/* Display the selected question details */}
@@ -163,7 +168,7 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
       {/* Monaco Code Editor */}
       <div className="bg-gray-700 p-4 rounded-lg">
         <Editor
-          height="400px"
+          height="50vh"
           defaultLanguage="python"
           value={code}
           onChange={handleEditorChange}
