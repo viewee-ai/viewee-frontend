@@ -95,10 +95,10 @@ const FeedbackPage: React.FC = () => {
         <code>{solution.code}</code>
       </pre>
       <div className="flex flex-col gap-2 text-sm">
-        <p className="text-green-400">
+        <p className="text-green-400 text-xl font-light rounded-[15px]">
           Time Complexity: {solution.time_complexity}
         </p>
-        <p className="text-blue-400">
+        <p className="text-blue-400 text-xl font-light">
           Space Complexity: {solution.space_complexity}
         </p>
       </div>
@@ -134,7 +134,7 @@ const FeedbackPage: React.FC = () => {
             <TabsTrigger
               key={index}
               value={index.toString()}
-              className="flex-1 data-[state=active]:bg-gray-800"
+              className="flex-1 data-[state=active]:bg-gray-800 data-[state=active]:border-2 data-[state=active]:border-green-500"
             >
               {solution.approach}
             </TabsTrigger>
@@ -162,27 +162,29 @@ const FeedbackPage: React.FC = () => {
   return (
     <div className="px-20 bg-gray-800 min-h-screen pb-10">
       {/* Header */}
-      <div className="text-5xl text-center font-semibold pb-6">
+      <div className="text-5xl text-center font-semibold pt-14 pb-8 text-slate-300">
         Interview <span className="text-green-500">Insight</span>
       </div>
 
       {/* Score Card */}
       <div className="flex justify-center items-center pb-6">
         <div className="border rounded-[20px] min-w-[300px] p-5 text-center bg-gray-900">
-          <div className="text-3xl font-semibold">Your Score:</div>
+          <div className="text-3xl font-semibold text-slate-300">
+            Your Score:
+          </div>
           <div className="text-3xl font-bold text-green-500">
-            {codeScore !== null ? `${codeScore}` : "N/A"}
+            {codeScore !== null ? `${codeScore}%` : "N/A"}
           </div>
         </div>
       </div>
 
-      <div className="border rounded-[15px]"></div>
+      <div className="border-b border-2 border-slate-400"></div>
 
       {/* Feedback Sections */}
       <div className="flex flex-col md:flex-row justify-center gap-8 mt-8">
         {/* Strengths Section */}
         <div className="flex-1">
-          <h3 className="text-2xl font-semibold pb-4 text-left">
+          <h3 className="text-3xl font-semibold pb-4 text-left text-slate-300">
             🚀 Where You Excel
           </h3>
           <div className="mt-4 grid gap-4">
@@ -190,16 +192,16 @@ const FeedbackPage: React.FC = () => {
               strengths.split("\n").map((strength, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-900 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-slate-300 rounded-lg"
                 >
-                  <h4 className="text-xl font-semibold">
+                  <h4 className="text-xl font-semibold pb-6">
                     You Identified the Solution Well
                   </h4>
                   <p>{strength}</p>
                 </Card>
               ))
             ) : (
-              <Card className="p-4 bg-gray-900 text-white rounded-lg">
+              <Card className="p-4 bg-gray-900 text-slate-300 rounded-lg">
                 <p>No strengths available.</p>
               </Card>
             )}
@@ -208,7 +210,7 @@ const FeedbackPage: React.FC = () => {
 
         {/* Improvements Section */}
         <div className="flex-1">
-          <h3 className="text-2xl font-semibold pb-4 text-left">
+          <h3 className="text-3xl font-semibold pb-4 text-left text-slate-300">
             ❗ What Needs Work
           </h3>
           <div className="mt-4 grid gap-4">
@@ -216,9 +218,9 @@ const FeedbackPage: React.FC = () => {
               improvements.split("\n").map((improvement, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-900 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-slate-300 rounded-lg"
                 >
-                  <h4 className="text-xl font-semibold">
+                  <h4 className="text-xl font-semibold pb-6">
                     Enhance Code Quality
                   </h4>
                   <p>{improvement}</p>
@@ -235,7 +237,7 @@ const FeedbackPage: React.FC = () => {
 
       {/* Updated Solution Code Section */}
       <div className="my-10">
-        <h3 className="text-2xl font-semibold pb-4 text-left">
+        <h3 className="text-3xl font-semibold pb-4 text-left">
           📝 Solution Code
         </h3>
         {renderSolutionTabs()}
