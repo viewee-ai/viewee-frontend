@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
+import demo from "@/public/demo.png";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { useRouter } from "next/navigation";
+
 
 export function Hero() {
   const router = useRouter();
@@ -55,7 +57,7 @@ export function Hero() {
             </p>
             <div className="flex items-center gap-x-5 w-full justify-center mt-5 ">
               {/* <LoginLink> */}
-              <Button variant="secondary" onClick={handleSignIn}>
+              <Button variant="default" onClick={handleSignIn}>
                 Sign in
               </Button>
               {/* </LoginLink> */}
@@ -74,30 +76,46 @@ export function Hero() {
               width="100%"
               xmlns="http://www.w3.org/2000/svg"
             >
-              
+              <defs>
+                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#1ccc84" />
+                  <stop offset="100%" stopColor="#1ccc84" />
+                </linearGradient>
+                <filter
+                  id="filter0_f_10_20"
+                  x="-160.333"
+                  y="-160.333"
+                  width="720.666"
+                  height="720.666"
+                  filterUnits="userSpaceOnUse"
+                  colorInterpolationFilters="sRGB"
+                >
+                  <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                  <feBlend
+                    in="SourceGraphic"
+                    in2="BackgroundImageFix"
+                    mode="normal"
+                    result="shape"
+                  />
+                  <feGaussianBlur stdDeviation="50" result="effect1_foregroundBlur_10_20" />
+                </filter>
+              </defs>
               <g clipPath="url(#clip0_10_20)">
                 <g filter="url(#filter0_f_10_20)">
-                  <path
-                    d="M128.6 0H0V322.2L106.2 134.75L128.6 0Z"
-                    fill="url(#gradient1)"
-                  />
-                  <path
-                    d="M0 322.2V400H240H320L106.2 134.75L0 322.2Z"
-                    fill="url(#gradient1)"
-                  />
-                  <path
-                    d="M320 400H400V78.75L106.2 134.75L320 400Z"
-                    fill="url(#gradient1)"
-                  />
-                  <path
-                    d="M400 0H128.6L106.2 134.75L400 78.75V0Z"
-                    fill="url(#gradient1)"
-                  />
+                  <path d="M128.6 0H0V322.2L106.2 134.75L128.6 0Z" fill="url(#gradient1)" />
+                  <path d="M0 322.2V400H240H320L106.2 134.75L0 322.2Z" fill="url(#gradient1)" />
+                  <path d="M320 400H400V78.75L106.2 134.75L320 400Z" fill="url(#gradient1)" />
+                  <path d="M400 0H128.6L106.2 134.75L400 78.75V0Z" fill="url(#gradient1)" />
                 </g>
               </g>
             </svg>
 
-
+            <Image
+              src={demo}
+              alt="Interactive coding interview environment"
+              priority
+              className="relative object-cover w-full border rounded-lg shadow-2xl lg:rounded-2xl"
+            />
           </div>
         </div>
       </section>

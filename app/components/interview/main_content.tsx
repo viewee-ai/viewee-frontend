@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Editor from "@monaco-editor/react";
+import { loadPyodide } from "pyodide";
 import questions from "@/data/75_blind.json";
 import { useSession } from "@/app/utils/session_provider";
 import { useAppContext } from "@/app/utils/AppContext";
+
 
 type Question = {
   title: string;
@@ -31,6 +33,27 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
   // const [changeTimeout, setChangeTimeout] = useState<NodeJS.Timeout | null>(null);
   // const [sessionId, setSessionId] = useState<string | null>(null);
   const { setSessionId } = useSession();
+  const [activeTab, setActiveTab] = useState<"testCase" | "output">("testCase");
+  const [testCases, setTestCases] = useState([
+    { nums: "[3,4,5,6]", target: "7", expectedOutput: [0, 1] },
+    { nums: "[1,2,3]", target: "4", expectedOutput: [0, 2] },
+  ]);
+  
+  const [activeTestCase, setActiveTestCase] = useState(0);
+  const [consoleOutput, setConsoleOutput] = useState<string>("");
+
+  // template code
+  const getTemplateCode = (questionTitle: string) => {
+    return `class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # Write your code here
+`;
+  };
+
+  const addNewTestCase = () => {
+    setTestCases([...testCases, { nums: "[]", target: "" }]);
+    setActiveTestCase(testCases.length);
+  };
 
   useEffect(() => {
     let foundQuestion: Question | undefined;
@@ -45,9 +68,12 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
     if (foundQuestion) {
       setSelectedQuestion(foundQuestion);
       setQuestion(foundQuestion);
-      initializeQuestion(foundQuestion); 
+      if (!code) {
+        setCode(getTemplateCode(foundQuestion.title));
+      }
+      initializeQuestion(foundQuestion);
     }
-  }, [title, setQuestion]);
+  }, [title, setQuestion, code, setCode]);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Initialize question data in the backend and store session ID
@@ -124,6 +150,69 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
     setChangeTimeout(timeout); */
   };
 
+  const runTestCase = async (index: number) => {
+    try {
+      const testInput = {
+        nums: JSON.parse(testCases[index].nums),
+        target: parseInt(testCases[index].target, 10),
+      };
+      const expectedOutput = testCases[index].expectedOutput;
+    
+      const response = await fetch('/api/execute_code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: code,
+          testInput: testInput,
+          expectedOutput: expectedOutput,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorResult = await response.json();
+        setConsoleOutput(
+          (prev) =>
+            prev +
+            `\nError running test case ${index + 1}: ${errorResult.error || 'Unknown error'}`
+        );
+        return;
+      }
+  
+      const result = await response.json();
+  
+      const passFailIndicator = result.passed
+        ? '✅ Passed'
+        : `❌ Failed (Expected: ${JSON.stringify(result.expectedOutput)}, Got: ${result.actualOutput})`;
+  
+      setConsoleOutput(
+        (prev) =>
+          prev +
+          `\nTest Case ${index + 1}: ${passFailIndicator}`
+      );
+  
+      if (result.stderr) {
+        setConsoleOutput(
+          (prev) =>
+            prev + `\nTest Case ${index + 1} Error:\n${result.stderr}`
+        );
+      }
+  
+      setActiveTab('output');
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred';
+      setConsoleOutput(
+        (prev) => prev + `\nError running test case ${index + 1}: ${errorMessage}`
+      );
+    }
+  };
+  const runAllTests = async () => {
+    setConsoleOutput("Running all test cases...\n");
+    for (let i = 0; i < testCases.length; i++) {
+      await runTestCase(i);
+    }
+  };
+
   if (!selectedQuestion) return <div>Loading...</div>;
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +259,7 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
         <Editor
           height="50vh"
           defaultLanguage="python"
-          value={code}
+          value={code || getTemplateCode(selectedQuestion?.title || "")}
           onChange={handleEditorChange}
           theme="vs-dark"
           options={{
@@ -185,6 +274,98 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
             cursorBlinking: "smooth",
           }}
         />
+      </div>
+
+      {/* Test Cases and Console Section */}
+      <div className="mt-4 bg-gray-900 rounded-lg overflow-hidden">
+        <div className="flex border-b border-gray-700">
+          <button
+            className={`px-4 py-2 ${activeTab === "testCase" ? "bg-gray-700 text-white" : "text-gray-400"}`}
+            onClick={() => setActiveTab("testCase")}
+          >
+            Test Case
+          </button>
+          <button
+            className={`px-4 py-2 ${activeTab === "output" ? "bg-gray-700 text-white" : "text-gray-400"}`}
+            onClick={() => setActiveTab("output")}
+          >
+            Output
+          </button>
+        </div>
+
+        {activeTab === "testCase" ? (
+          <div className="p-4">
+            <div className="flex space-x-2 mb-4">
+              {testCases.map((_, index) => (
+                <button
+                  key={index}
+                  className={`px-3 py-1 rounded ${
+                    activeTestCase === index ? "bg-blue-600" : "bg-gray-700"
+                  }`}
+                  onClick={() => setActiveTestCase(index)}
+                >
+                  Case {index + 1}
+                </button>
+              ))}
+              <button
+                className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600"
+                onClick={addNewTestCase}
+              >
+                +
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">nums =</label>
+                <input
+                  type="text"
+                  value={testCases[activeTestCase].nums}
+                  onChange={(e) => updateTestCase(activeTestCase, "nums", e.target.value)}
+                  className="w-full bg-gray-800 rounded px-3 py-2 text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">target =</label>
+                <input
+                  type="text"
+                  value={testCases[activeTestCase].target}
+                  onChange={(e) => updateTestCase(activeTestCase, "target", e.target.value)}
+                  className="w-full bg-gray-800 rounded px-3 py-2 text-white"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-4">
+              <button
+                className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700"
+                onClick={() => runTestCase(activeTestCase)}
+              >
+                Run
+              </button>
+              <button
+                className="px-4 py-2 bg-green-600 rounded hover:bg-green-700"
+                onClick={runAllTests}
+              >
+                Run All Tests
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="p-4">
+            <pre className="font-mono text-sm whitespace-pre-wrap">
+              {consoleOutput || "No output yet. Run your test cases to see results."}
+            </pre>
+            {consoleOutput && (
+              <button
+                className="mt-4 px-3 py-1 text-sm bg-gray-700 rounded hover:bg-gray-600"
+                onClick={() => setConsoleOutput("")}
+              >
+                Clear Console
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
