@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Solution {
   approach: string;
@@ -18,7 +19,7 @@ interface SolutionsData {
 }
 
 const FeedbackPage: React.FC = () => {
-  const [averageScore, setAverageScore] = useState<number | null>(null);
+  //const [averageScore, setAverageScore] = useState<number | null>(null);
   const [codeScore, setCodeScore] = useState<number | null>(null);
   const [strengths, setStrengths] = useState<string>("");
   const [improvements, setImprovements] = useState<string>("");
@@ -27,6 +28,7 @@ const FeedbackPage: React.FC = () => {
     null
   );
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>("0");
 
   useEffect(() => {
     document.body.classList.add("bg-gray-800");
@@ -40,13 +42,13 @@ const FeedbackPage: React.FC = () => {
       try {
         setLoading(true);
         const params = new URLSearchParams(window.location.search);
-        const averageScoreParam = Number(params.get("averageScore"));
+        //const averageScoreParam = Number(params.get("averageScore"));
         const codeScoreParam = Number(params.get("codeScore"));
         const strengthsParam = params.get("strengths") || "";
         const improvementsParam = params.get("improvements") || "";
         const questionParam = params.get("question") || "";
 
-        setAverageScore(averageScoreParam);
+        //setAverageScore(averageScoreParam);
         setCodeScore(codeScoreParam);
         setStrengths(strengthsParam);
         setImprovements(improvementsParam);
@@ -78,6 +80,76 @@ const FeedbackPage: React.FC = () => {
 
     fetchData();
   }, []);
+
+  const renderSolutionContent = (solution: Solution) => (
+    <div className="w-full">
+      <h4 className="text-xl font-semibold mb-2">{solution.approach}</h4>
+      <pre
+        className="bg-gray-800 p-4 rounded-md overflow-x-auto mb-4"
+        style={{
+          maxHeight: "400px",
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+        }}
+      >
+        <code>{solution.code}</code>
+      </pre>
+      <div className="flex flex-col gap-2 text-sm">
+        <p className="text-green-400">
+          Time Complexity: {solution.time_complexity}
+        </p>
+        <p className="text-blue-400">
+          Space Complexity: {solution.space_complexity}
+        </p>
+      </div>
+    </div>
+  );
+
+  const renderSolutionTabs = () => {
+    if (error) {
+      return (
+        <Card className="p-4 bg-gray-900 text-white rounded-lg">
+          <p className="text-red-500">{error}</p>
+        </Card>
+      );
+    }
+
+    if (!solutionsData?.solutions) {
+      return (
+        <Card className="p-4 bg-gray-900 text-white rounded-lg">
+          <p>No solutions available.</p>
+        </Card>
+      );
+    }
+
+    return (
+      <Tabs
+        defaultValue="0"
+        className="w-full"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
+        <TabsList className="w-full bg-gray-900 mb-4">
+          {solutionsData.solutions.map((solution, index) => (
+            <TabsTrigger
+              key={index}
+              value={index.toString()}
+              className="flex-1 data-[state=active]:bg-gray-800"
+            >
+              {solution.approach}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {solutionsData.solutions.map((solution, index) => (
+          <TabsContent key={index} value={index.toString()} className="mt-0">
+            <Card className="p-4 bg-gray-900 text-white rounded-lg">
+              {renderSolutionContent(solution)}
+            </Card>
+          </TabsContent>
+        ))}
+      </Tabs>
+    );
+  };
 
   if (loading) {
     return (
@@ -161,49 +233,12 @@ const FeedbackPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Solution Code Section */}
+      {/* Updated Solution Code Section */}
       <div className="my-10">
         <h3 className="text-2xl font-semibold pb-4 text-left">
           📝 Solution Code
         </h3>
-        {error ? (
-          <Card className="p-4 bg-gray-900 text-white rounded-lg">
-            <p className="text-red-500">{error}</p>
-          </Card>
-        ) : solutionsData && solutionsData.solutions ? (
-          solutionsData.solutions.map((solution: Solution, index: number) => (
-            <Card
-              key={index}
-              className="p-4 bg-gray-900 text-white rounded-lg mb-4"
-            >
-              <h4 className="text-xl font-semibold mb-2">
-                {solution.approach}
-              </h4>
-              <pre
-                className="bg-gray-800 p-4 rounded-md overflow-x-auto mb-4"
-                style={{
-                  maxHeight: "400px",
-                  whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
-                }}
-              >
-                <code>{solution.code}</code>
-              </pre>
-              <div className="flex flex-col gap-2 text-sm">
-                <p className="text-green-400">
-                  Time Complexity: {solution.time_complexity}
-                </p>
-                <p className="text-blue-400">
-                  Space Complexity: {solution.space_complexity}
-                </p>
-              </div>
-            </Card>
-          ))
-        ) : (
-          <Card className="p-4 bg-gray-900 text-white rounded-lg">
-            <p>No solutions available.</p>
-          </Card>
-        )}
+        {renderSolutionTabs()}
       </div>
     </div>
   );
