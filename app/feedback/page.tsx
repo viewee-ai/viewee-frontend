@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Home } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 
 interface Solution {
   approach: string;
@@ -161,13 +163,22 @@ const FeedbackPage: React.FC = () => {
 
   return (
     <div className="px-20 bg-gray-800 min-h-screen pb-10">
-      {/* Header */}
-      <div className="text-5xl text-center font-semibold pt-14 pb-8 text-slate-300">
-        Interview <span className="text-green-500">Insight</span>
+      {/* Header with navigation */}
+      <div className="flex justify-between items-center pt-6 px-4">
+        <button
+          onClick={() => (window.location.href = "/dashboard")}
+          className="text-slate-300 hover:text-green-500 transition-colors"
+        >
+          <Home size={24} />
+        </button>
+        <div className="text-5xl text-center font-semibold text-slate-300 pt-8 absolute left-1/2 transform -translate-x-1/2">
+          Interview <span className="text-green-500">Insight</span>
+        </div>
+        <UserButton afterSignOutUrl="/" />
       </div>
 
       {/* Score Card */}
-      <div className="flex justify-center items-center pb-6">
+      <div className="flex justify-center items-center pb-6 pt-16">
         <div className="border rounded-[20px] min-w-[300px] p-5 text-center bg-gray-900">
           <div className="text-3xl font-semibold text-slate-300">
             Your Score:
