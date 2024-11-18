@@ -3,6 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/app/utils/session_provider";
 import { useAppContext } from "@/app/utils/AppContext";
+import Image from "next/image";
+import avatar from "@/public/avatar.png";
+import { Spinner } from "@/components/ui/spinner";
 
 interface TranscriptMessage {
   sender: "user" | "interviewer";
@@ -21,8 +24,9 @@ const InterviewerComponent: React.FC = () => {
   const ttsSocketRef = useRef<WebSocket | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
   const { sessionId } = useSession();
-  const { code } = useAppContext();
+  const { code, question } = useAppContext();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!audioContextRef.current) {
@@ -347,16 +351,26 @@ const InterviewerComponent: React.FC = () => {
     }
 
     console.log("Finishing interview session:", sessionId);
+    
+    setLoading(true);
 
     try {
+      const userMessages = transcript
+        .filter((item) => item.sender === 'user')
+        .map((item) => item.message)
+        .join(" ");
+      
+      console.log("User's Transcript:", userMessages);
+
       const response = await fetch("/api/feedback_summary", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          transcript: transcript.map((item) => item.message).join(" "),
+          userTranscript: userMessages,
           code: code,
+          question: question,
         }),
       });
 
@@ -367,76 +381,91 @@ const InterviewerComponent: React.FC = () => {
       const dataString = await response.json();
       const data = JSON.parse(dataString); // Convert the string to JSON
       const {
-        Score: score,
-        areas_of_excellence: strengthsText,
-        areas_of_improvement: improvementsText,
-        thought_process: solutionCodeText,
+        average_score,
+        code_correctness_score,
+        thought_process_score,
+        areas_of_excellence,
+        areas_of_improvement,
       } = data;
+
       console.log("Feedback API response:", data);
-      console.log(score);
+      console.log(average_score);
+
       // Construct the URL with query parameters
       const url = new URL("/feedback", window.location.origin);
-      url.searchParams.append("codeScore", score);
-      url.searchParams.append("strengths", strengthsText);
-      url.searchParams.append("improvements", improvementsText);
-      url.searchParams.append("solutionCode", solutionCodeText);
+      url.searchParams.append("averageScore", average_score.toString());
+      url.searchParams.append("codeScore", code_correctness_score.toString());
+      url.searchParams.append("thoughtProcessScore", thought_process_score.toString());
+      url.searchParams.append("strengths", areas_of_excellence);
+      url.searchParams.append("improvements", areas_of_improvement);
+      url.searchParams.append("question", question!.title);
 
       // Navigate to FeedbackPage with feedback data as query parameters
       router.push(url.toString());
     } catch (error) {
       console.error("Error fetching feedback:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="w-80 p-6 bg-gray-900 text-white flex flex-col h-full">
-      {/* Top Section: Interviewer Profile */}
-      <div className="flex items-center mb-6">
-        <img
-          className="rounded-full h-16 w-16"
-          src="https://via.placeholder.com/150"
-          alt="Interviewer Profile"
-        />
-        <div className="ml-4">
-          <p className="text-xl">Triet Ha</p>
-          <span className="text-sm text-gray-400">{status}</span>
+    <div>
+      {loading && (
+        <div className="loading-overlay">
+          <Spinner />
         </div>
-      </div>
+      )}
+      <div className="w-full md:w-80 p-6 bg-gray-900 text-white flex flex-col h-full">
 
-      {/* Middle Section: Live Transcript Display */}
-      <div className="flex-grow bg-gray-800 p-4 rounded-lg overflow-y-auto mb-4">
-        {transcript.map((item, index) => (
-          <div
-            key={index}
-            className={`mb-2 ${
-              item.sender === "user" ? "text-blue-300" : "text-gray-400"
-            }`}
-          >
-            <span className="font-bold">
-              {item.sender === "user" ? "You" : "Triet"}:{" "}
-            </span>
-            <span>{item.message}</span>
+        {/* Top Section: Interviewer Profile */}
+        <div className="flex items-center mb-6">
+          <Image
+            className="rounded-full h-16 w-16"
+            src={avatar}
+            alt="Interviewer Profile"
+          />
+          <div className="ml-4">
+            <p className="text-xl">Triet Ha</p>
+            <span className="text-sm text-gray-400">{status}</span>
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Bottom Section: Control Buttons */}
-      <div className="flex justify-between space-x-3">
-        <button
-          className={`bg-${
-            isRecording ? "purple-600" : "blue-600"
-          } text-white py-2 px-4 rounded-[15px]`}
-          onClick={handleMicClick}
-        >
-          {isRecording ? "Stop Recording" : "Start Recording"}
-        </button>
-        {/* <button className="bg-yellow-500 text-white py-2 px-4 rounded">Interrupt</button> */}
-        <button
-          className="bg-red-700 text-white py-2 px-4 rounded-[15px]"
-          onClick={handleFinishInterview}
-        >
-          Finish Interview
-        </button>
+        {/* Middle Section: Live Transcript Display */}
+        <div className="flex-grow bg-gray-800 p-4 rounded-lg overflow-y-auto mb-4">
+          {transcript.map((item, index) => (
+            <div
+              key={index}
+              className={`mb-2 ${
+                item.sender === "user" ? "text-blue-300" : "text-gray-400"
+              }`}
+            >
+              <span className="font-bold">
+                {item.sender === "user" ? "You" : "Triet"}:{" "}
+              </span>
+              <span>{item.message}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Section: Control Buttons */}
+        <div className="flex justify-between space-x-3">
+          <button
+            className={`${
+              isRecording ? "bg-red-600" : "bg-blue-600"
+            } text-white py-2 px-4 rounded-[15px]`}
+            onClick={handleMicClick}
+          >
+            {isRecording ? "Stop Recording" : "Start Recording"}
+          </button>
+          {/* <button className="bg-yellow-500 text-white py-2 px-4 rounded">Interrupt</button> */}
+          <button
+            className="bg-green-600 text-white py-2 px-4 rounded-[15px]"
+            onClick={handleFinishInterview}
+          >
+            Finish Interview
+          </button>
+        </div>
       </div>
     </div>
   );

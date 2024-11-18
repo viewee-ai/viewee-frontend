@@ -20,24 +20,37 @@ interface SolutionsData {
   length: number;
 }
 
-const FeedbackPage: React.FC = () => {
-  //const [averageScore, setAverageScore] = useState<number | null>(null);
-  const [codeScore, setCodeScore] = useState<number | null>(null);
-  const [strengths, setStrengths] = useState<string>("");
-  const [improvements, setImprovements] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [solutionsData, setSolutionsData] = useState<SolutionsData | null>(
-    null
-  );
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("0");
+interface Solution {
+  approach: string;
+  code: string;
+  time_complexity: string;
+  space_complexity: string;
+}
 
-  useEffect(() => {
-    document.body.classList.add("bg-gray-800");
-    return () => {
-      document.body.classList.remove("bg-gray-800");
-    };
-  }, []);
+interface SolutionsData {
+  problem_name: string;
+  solutions: Solution[];
+  length: number;
+}
+
+const FeedbackPage: React.FC = () => {
+//const [averageScore, setAverageScore] = useState<number | null>(null);
+const [codeScore, setCodeScore] = useState<number | null>(null);
+const [strengths, setStrengths] = useState<string>("");
+const [improvements, setImprovements] = useState<string>("");
+const [loading, setLoading] = useState<boolean>(true);
+const [solutionsData, setSolutionsData] = useState<SolutionsData | null>(
+  null
+);
+const [error, setError] = useState<string | null>(null);
+const [activeTab, setActiveTab] = useState<string>("0");
+
+useEffect(() => {
+  document.body.classList.add("bg-gray-800");
+  return () => {
+    document.body.classList.remove("bg-gray-800");
+  };
+}, []);
 
   useEffect(() => {
     const fetchData = async () => {
