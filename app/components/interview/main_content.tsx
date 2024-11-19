@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Editor from "@monaco-editor/react";
-import { loadPyodide } from "pyodide";
 import questions from "@/data/75_blind.json";
 import { useSession } from "@/app/utils/session_provider";
 import { useAppContext } from "@/app/utils/AppContext";

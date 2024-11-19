@@ -62,7 +62,7 @@ export function Hero() {
               </Button>
               {/* </LoginLink> */}
               {/* <RegisterLink> */}
-              <Button className="bg-primary-green">Try for free</Button>
+              <Button className="white">Try for free</Button>
               {/* </RegisterLink> */}
             </div>
           </div>

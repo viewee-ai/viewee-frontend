@@ -13,7 +13,7 @@ export default function CustomSignIn(): JSX.Element | null {
       await signIn.authenticateWithRedirect({
         strategy,
         redirectUrl: '/sso-callback',
-        redirectUrlComplete: '/interview',
+        redirectUrlComplete: '/dashboard',
       });
     } catch (err) {
       console.error('OAuth error', err);

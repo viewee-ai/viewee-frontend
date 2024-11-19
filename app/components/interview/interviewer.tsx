@@ -17,6 +17,7 @@ const InterviewerComponent: React.FC = () => {
     "Listening"
   );
   const [transcript, setTranscript] = useState<TranscriptMessage[]>([]);
+  const [currentUserMessage, setCurrentUserMessage] = useState<string>("");
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -77,13 +78,18 @@ const InterviewerComponent: React.FC = () => {
         const received = JSON.parse(event.data);
         if (received.is_final) {
           const transcriptText = received.channel.alternatives[0].transcript;
-          setTranscript((prev) => [
-            ...prev,
-            { sender: "user", message: transcriptText },
-          ]);
-
-          // Enable this line once the program uses auto speech detection, instead of manual toggle
-          // sendTranscriptToBackend(transcriptText);
+          setCurrentUserMessage((prev) => prev + " " + transcriptText);
+          setTranscript((prev) => {
+            const lastMessage = prev[prev.length - 1];
+            if (lastMessage && lastMessage.sender === "user") {
+              return [
+                ...prev.slice(0, -1),
+                { sender: "user", message: lastMessage.message + " " + transcriptText },
+              ];
+            } else {
+              return [...prev, { sender: "user", message: transcriptText }];
+            }
+          });
         }
       };
 
@@ -426,7 +432,7 @@ const InterviewerComponent: React.FC = () => {
             alt="Interviewer Profile"
           />
           <div className="ml-4">
-            <p className="text-xl">Triet Ha</p>
+            <p className="text-xl">Interviewer</p>
             <span className="text-sm text-gray-400">{status}</span>
           </div>
         </div>
@@ -441,7 +447,7 @@ const InterviewerComponent: React.FC = () => {
               }`}
             >
               <span className="font-bold">
-                {item.sender === "user" ? "You" : "Triet"}:{" "}
+                {item.sender === "user" ? "You" : "Interviewer"}:{" "}
               </span>
               <span>{item.message}</span>
             </div>

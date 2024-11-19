@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import questions from '@/data/75_blind.json';
+import { UserButton } from '@clerk/nextjs'; 
 
 interface Question {
   title: string;
@@ -87,6 +88,8 @@ export default function DashboardPage() {
             <span>Home</span>
           </Button>
         </Link>
+
+        <UserButton /> 
       </div>
 
       <div className="flex items-center justify-between mb-4">

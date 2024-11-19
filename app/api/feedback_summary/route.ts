@@ -10,12 +10,6 @@ export async function POST(req: Request) {
     console.log("Transcript:", userTranscript);
     console.log("Question:", question);
     
-    if (!code || !userTranscript || !question) {
-      return NextResponse.json(
-        { error: 'Missing required parameters: code, transcript, and question are all required.' },
-        { status: 400 }
-      );
-    }
 
     const FeedbackSchema = z.object({
       code_correctness_score: z.number(),
