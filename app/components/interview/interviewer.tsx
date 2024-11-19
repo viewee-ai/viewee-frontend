@@ -422,7 +422,7 @@ const InterviewerComponent: React.FC = () => {
           <Spinner />
         </div>
       )}
-      <div className="w-full md:w-80 p-6 bg-gray-900 text-white flex flex-col h-full">
+      <div className="w-full md:w-200 p-6 bg-gray-900 text-white flex flex-col h-full">
 
         {/* Top Section: Interviewer Profile */}
         <div className="flex items-center mb-6">
