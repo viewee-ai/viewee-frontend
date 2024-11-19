@@ -25,6 +25,13 @@ interface MainContentProps {
   title: string;
 }
 
+type TestCase = {
+  nums: string;
+  target: string;
+  expectedOutput: number[] | null; 
+};
+
+
 const MainContent: React.FC<MainContentProps> = ({ title }) => {
   const { code, setCode, setQuestion } = useAppContext();
   const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(
@@ -50,11 +57,6 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
 `;
   };
 
-  const addNewTestCase = () => {
-    setTestCases([...testCases, { nums: "[]", target: "" }]);
-    setActiveTestCase(testCases.length);
-  };
-
   useEffect(() => {
     let foundQuestion: Question | undefined;
     for (const category in questions as Questions) {
@@ -74,6 +76,24 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
       initializeQuestion(foundQuestion);
     }
   }, [title, setQuestion, code, setCode]);
+
+  const updateTestCase = (index: number, field: keyof TestCase, value: string | number[]) => {
+    const updatedTestCases = [...testCases];
+    if (field === 'expectedOutput') {
+      updatedTestCases[index] = { ...updatedTestCases[index], [field]: value as number[] };
+    } else {
+      updatedTestCases[index] = { ...updatedTestCases[index], [field]: value as string };
+    }
+    setTestCases(updatedTestCases);
+  };
+
+  const addNewTestCase = () => {
+    setTestCases([
+      ...testCases,
+      { nums: "[]", target: "0", expectedOutput: [] } 
+    ]);
+    setActiveTestCase(testCases.length);
+  };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   // Initialize question data in the backend and store session ID
@@ -157,6 +177,13 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
         target: parseInt(testCases[index].target, 10),
       };
       const expectedOutput = testCases[index].expectedOutput;
+      if (expectedOutput === null) {
+        setConsoleOutput(
+          (prev) =>
+            prev + `\nError running test case ${index + 1}: Expected output not set`
+        );
+        return;
+      }
     
       const response = await fetch('/api/execute_code', {
         method: 'POST',
@@ -331,6 +358,24 @@ const MainContent: React.FC<MainContentProps> = ({ title }) => {
                   type="text"
                   value={testCases[activeTestCase].target}
                   onChange={(e) => updateTestCase(activeTestCase, "target", e.target.value)}
+                  className="w-full bg-gray-800 rounded px-3 py-2 text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">expected output =</label>
+                <input
+                  type="text"
+                  value={JSON.stringify(testCases[activeTestCase].expectedOutput)}
+                  onChange={(e) => {
+                    try {
+                      const parsed = JSON.parse(e.target.value);
+                      updateTestCase(activeTestCase, "expectedOutput", parsed);
+                    } catch (error) {
+                      // Handle invalid JSON input
+                      console.error('Invalid JSON input for expected output');
+                    }
+                  }}
+                  placeholder="[0,1]"
                   className="w-full bg-gray-800 rounded px-3 py-2 text-white"
                 />
               </div>
