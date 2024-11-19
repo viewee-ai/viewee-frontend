@@ -1,9 +1,24 @@
-// app/feedback/page.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Home } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
+
+interface Solution {
+  approach: string;
+  code: string;
+  time_complexity: string;
+  space_complexity: string;
+}
+
+interface SolutionsData {
+  problem_name: string;
+  solutions: Solution[];
+  length: number;
+}
 
 interface Solution {
   approach: string;
@@ -19,103 +34,181 @@ interface SolutionsData {
 }
 
 const FeedbackPage: React.FC = () => {
-  const [averageScore, setAverageScore] = useState<number | null>(null);
-  const [codeScore, setCodeScore] = useState<number | null>(null);
-  //const [thoughtProcessScore, setThoughtProcessScore] = useState<number | null>(null);
-  const [strengths, setStrengths] = useState<string>("");
-  const [improvements, setImprovements] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [solutionsData, setSolutionsData] = useState<SolutionsData | null>(null);
+//const [averageScore, setAverageScore] = useState<number | null>(null);
+const [codeScore, setCodeScore] = useState<number | null>(null);
+const [strengths, setStrengths] = useState<string>("");
+const [improvements, setImprovements] = useState<string>("");
+const [loading, setLoading] = useState<boolean>(true);
+const [solutionsData, setSolutionsData] = useState<SolutionsData | null>(
+  null
+);
+const [error, setError] = useState<string | null>(null);
+const [activeTab, setActiveTab] = useState<string>("0");
+
+useEffect(() => {
+  document.body.classList.add("bg-gray-800");
+  return () => {
+    document.body.classList.remove("bg-gray-800");
+  };
+}, []);
 
   useEffect(() => {
-    document.body.classList.add("bg-gray-800");
-
-    // Cleanup on unmount
-    return () => {
-      document.body.classList.remove("bg-gray-800");
-    };
-  }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const averageScoreParam = Number(params.get("averageScore"));
-    const codeScoreParam = Number(params.get("codeScore"));
-    // const thoughtProcessScoreParam = Number(params.get("thoughtProcessScore"));
-    const strengthsParam = params.get("strengths") || "";
-    const improvementsParam = params.get("improvements") || "";
-    const questionParam = params.get("question") || "";
-
-    setAverageScore(averageScoreParam);
-    setCodeScore(codeScoreParam);
-    // setThoughtProcessScore(thoughtProcessScoreParam);
-    setStrengths(strengthsParam);
-    setImprovements(improvementsParam);
-    
-    // Retrieve solution code from DB here
-    const fetchSolutions = async () => {  
+    const fetchData = async () => {
       try {
-        console.log("Fetching solutions for question:", questionParam);
-        const response = await fetch("http://localhost:8000/api/get-solutions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ problem_name: questionParam }),
-        });
-        const result = await response.json();
-        console.log("Solutions:", result);
-        setSolutionsData(result);
+        setLoading(true);
+        const params = new URLSearchParams(window.location.search);
+        //const averageScoreParam = Number(params.get("averageScore"));
+        const codeScoreParam = Number(params.get("codeScore"));
+        const strengthsParam = params.get("strengths") || "";
+        const improvementsParam = params.get("improvements") || "";
+        const questionParam = params.get("question") || "";
+
+        //setAverageScore(averageScoreParam);
+        setCodeScore(codeScoreParam);
+        setStrengths(strengthsParam);
+        setImprovements(improvementsParam);
+
+        if (questionParam) {
+          const response = await fetch(
+            "http://localhost:8000/api/get-solutions",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ problem_name: questionParam }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch solutions");
+          }
+
+          const result = await response.json();
+          setSolutionsData(result[0]); // Access first item since backend returns an array
+        }
       } catch (error) {
-        console.error("Error fetching solutions:", error);
+        console.error("Error:", error);
+        setError("Failed to load solutions");
+      } finally {
+        setLoading(false);
       }
     };
-  
-    fetchSolutions();
 
-    if (!averageScoreParam && !strengthsParam && !improvementsParam && !solutionsData) {
-      console.error("Missing feedback data in query parameters.");
-    }
-    setLoading(false);
+    fetchData();
   }, []);
+
+  const renderSolutionContent = (solution: Solution) => (
+    <div className="w-full">
+      <h4 className="text-xl font-semibold mb-2">{solution.approach}</h4>
+      <pre
+        className="bg-gray-800 p-4 rounded-md overflow-x-auto mb-4"
+        style={{
+          maxHeight: "400px",
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+        }}
+      >
+        <code>{solution.code}</code>
+      </pre>
+      <div className="flex flex-col gap-2 text-sm">
+        <p className="text-green-400 text-xl font-light rounded-[15px]">
+          Time Complexity: {solution.time_complexity}
+        </p>
+        <p className="text-blue-400 text-xl font-light">
+          Space Complexity: {solution.space_complexity}
+        </p>
+      </div>
+    </div>
+  );
+
+  const renderSolutionTabs = () => {
+    if (error) {
+      return (
+        <Card className="p-4 bg-gray-900 text-white rounded-lg">
+          <p className="text-red-500">{error}</p>
+        </Card>
+      );
+    }
+
+    if (!solutionsData?.solutions) {
+      return (
+        <Card className="p-4 bg-gray-900 text-white rounded-lg">
+          <p>No solutions available.</p>
+        </Card>
+      );
+    }
+
+    return (
+      <Tabs
+        defaultValue="0"
+        className="w-full"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
+        <TabsList className="w-full bg-gray-900 mb-4">
+          {solutionsData.solutions.map((solution, index) => (
+            <TabsTrigger
+              key={index}
+              value={index.toString()}
+              className="flex-1 data-[state=active]:bg-gray-800 data-[state=active]:border-2 data-[state=active]:border-green-500"
+            >
+              {solution.approach}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {solutionsData.solutions.map((solution, index) => (
+          <TabsContent key={index} value={index.toString()} className="mt-0">
+            <Card className="p-4 bg-gray-900 text-white rounded-lg">
+              {renderSolutionContent(solution)}
+            </Card>
+          </TabsContent>
+        ))}
+      </Tabs>
+    );
+  };
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-        className="bg-gray-800"
-      >
+      <div className="flex justify-center items-center h-screen bg-gray-800">
         <Spinner />
       </div>
     );
   }
 
   return (
-    <div className="px-20 bg-gray-800 h-full">
-      {/* Header */}
-      <div className="text-5xl text-center font-semibold pb-6">
-        Interview <span className="text-green-500">Insight</span>
+    <div className="px-20 bg-gray-800 min-h-screen pb-10">
+      {/* Header with navigation */}
+      <div className="flex justify-between items-center pt-6 px-4">
+        <button
+          onClick={() => (window.location.href = "/dashboard")}
+          className="text-slate-300 hover:text-green-500 transition-colors"
+        >
+          <Home size={24} />
+        </button>
+        <div className="text-5xl text-center font-semibold text-slate-300 pt-8 absolute left-1/2 transform -translate-x-1/2">
+          Interview <span className="text-green-500">Insight</span>
+        </div>
+        <UserButton afterSignOutUrl="/" />
       </div>
 
       {/* Score Card */}
-      <div className="flex justify-center items-center pb-6">
+      <div className="flex justify-center items-center pb-6 pt-16">
         <div className="border rounded-[20px] min-w-[300px] p-5 text-center bg-gray-900">
-          <div className="text-3xl font-semibold">Your Score:</div>
+          <div className="text-3xl font-semibold text-slate-300">
+            Your Score:
+          </div>
           <div className="text-3xl font-bold text-green-500">
-            {codeScore !== null ? `${codeScore}` : "N/A"}
+            {codeScore !== null ? `${codeScore}%` : "N/A"}
           </div>
         </div>
       </div>
 
-      <div className="border rounded-[15px]"></div>
+      <div className="border-b border-2 border-slate-400"></div>
 
       {/* Feedback Sections */}
-      <div className="flex justify-center gap-8 mt-8">
+      <div className="flex flex-col md:flex-row justify-center gap-8 mt-8">
         {/* Strengths Section */}
         <div className="flex-1">
-          <h3 className="text-2xl font-semibold pb-4 text-left">
+          <h3 className="text-3xl font-semibold pb-4 text-left text-slate-300">
             🚀 Where You Excel
           </h3>
           <div className="mt-4 grid gap-4">
@@ -123,16 +216,16 @@ const FeedbackPage: React.FC = () => {
               strengths.split("\n").map((strength, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-900 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-slate-300 rounded-lg"
                 >
-                  <h4 className="text-xl font-semibold">
+                  <h4 className="text-xl font-semibold pb-6">
                     You Identified the Solution Well
                   </h4>
                   <p>{strength}</p>
                 </Card>
               ))
             ) : (
-              <Card className="p-4 bg-gray-900 text-white rounded-lg">
+              <Card className="p-4 bg-gray-900 text-slate-300 rounded-lg">
                 <p>No strengths available.</p>
               </Card>
             )}
@@ -141,7 +234,7 @@ const FeedbackPage: React.FC = () => {
 
         {/* Improvements Section */}
         <div className="flex-1">
-          <h3 className="text-2xl font-semibold pb-4 text-left">
+          <h3 className="text-3xl font-semibold pb-4 text-left text-slate-300">
             ❗ What Needs Work
           </h3>
           <div className="mt-4 grid gap-4">
@@ -149,9 +242,9 @@ const FeedbackPage: React.FC = () => {
               improvements.split("\n").map((improvement, index) => (
                 <Card
                   key={index}
-                  className="p-4 bg-gray-900 text-white rounded-lg"
+                  className="p-4 bg-gray-900 text-slate-300 rounded-lg"
                 >
-                  <h4 className="text-xl font-semibold">
+                  <h4 className="text-xl font-semibold pb-6">
                     Enhance Code Quality
                   </h4>
                   <p>{improvement}</p>
@@ -166,28 +259,12 @@ const FeedbackPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Solution Code Section */}
+      {/* Updated Solution Code Section */}
       <div className="my-10">
-        <h3 className="text-2xl font-semibold pb-4 text-left">
+        <h3 className="text-3xl font-semibold pb-4 text-left">
           📝 Solution Code
         </h3>
-        {solutionsData.solutions.map((solution: Solution, index: number) => (
-          <Card key={index} className="p-4 bg-gray-800 text-white rounded-lg mb-4">
-            <h4 className="text-xl font-semibold">{solution.approach}</h4>
-            <pre
-              className="bg-gray-900 p-4 rounded-md overflow-x-auto"
-              style={{
-                maxHeight: "400px",
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-all",
-              }}
-            >
-              <code>{solution.code}</code>
-            </pre>
-            <p>Time Complexity: {solution.time_complexity}</p>
-            <p>Space Complexity: {solution.space_complexity}</p>
-          </Card>
-        ))}
+        {renderSolutionTabs()}
       </div>
     </div>
   );
