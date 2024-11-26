@@ -1,29 +1,29 @@
-import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import MainContent from '@/app/components/interview/main_content';
-import { SessionProvider } from '@/app/utils/session_provider';
+import React from "react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import MainContent from "@/app/components/interview/main_content";
+import { SessionProvider } from "@/app/utils/session_provider";
 
-describe('MainContent Component', () => {
-  test('renders code editor', () => {
+describe("MainContent Component", () => {
+  test("renders code editor", () => {
     render(
       <SessionProvider>
-        <MainContent />
+        <MainContent title="" />
       </SessionProvider>
     );
     // Check if the code editor is rendered
-    expect(screen.getByTestId('code-editor')).toBeInTheDocument();
+    expect(screen.getByTestId("code-editor")).toBeInTheDocument();
   });
 
-  test('runs test cases and displays output', async () => {
+  test("runs test cases and displays output", async () => {
     render(
       <SessionProvider>
-        <MainContent />
+        <MainContent title="" />
       </SessionProvider>
     );
 
-    // Type code into the code editor
-    const codeEditor = screen.getByTestId('code-editor');
+    // Type code into monaco code editor
+    const codeEditor = screen.getByTestId("code-editor");
     fireEvent.change(codeEditor, {
       target: {
         value: `def twoSum(nums, target):
@@ -35,8 +35,8 @@ describe('MainContent Component', () => {
       },
     });
 
-    // Click the 'Run Tests' button
-    const runTestsButton = screen.getByText('Run All Tests');
+    // Click 'Run Tests' button
+    const runTestsButton = screen.getByText("Run All Tests");
     fireEvent.click(runTestsButton);
 
     await waitFor(() => {
