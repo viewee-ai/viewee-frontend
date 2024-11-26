@@ -34,8 +34,40 @@ Copy these keys into your .env file
 npm run dev
 ```
 
-## TODO LIST:
-- [ ] Dashboards
-- [ ] Assign question number and category to each question (level, difficultly etc)
-- [ ] Connect to MongoDB for questions
+---------------
 
+## FOR TESTING
+1. use this command for manually select elements with PlayWright for logging in:
+```
+npx playwright codegen --save-storage=storageState.json http://localhost:3000
+```
+
+This will produce a storageState.json which will be used as the config for playwright.config.ts, which ensure security regarding sensitive log-in data. 
+
+2. Performance testing.
+```
+npx playwright test tests/performance.spec.ts
+```
+
+or
+
+To visually debug the test, you can run it in headed mode.
+```
+npx playwright test tests/performance.spec.ts --headed
+```
+
+To step through the test interactively, use:
+```
+npx playwright test tests/performance.spec.ts --debug
+```
+
+3. Component testing:
+MainContent:
+```
+npm test -- __tests__/components/MainContent.test.tsx
+```
+
+user's codeExecution:
+```
+npx playwright test tests/codeExecution.spec.ts
+```
