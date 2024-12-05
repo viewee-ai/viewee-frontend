@@ -1,6 +1,6 @@
-# GetCooked AI
+# Viewee
 
-Welcome to GetCooked AI, an innovative AI-powered interview preparation platform.
+Welcome to Viewee, an innovative AI-powered technical interview preparation platform.
 
 ## Getting Started
 
